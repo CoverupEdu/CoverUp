@@ -5,9 +5,13 @@
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
             <h3>Sets Stuff!</h3>
-            <img ng-src="{{setService.image}}" alt="Pleasework" width="200" height="200">
+            <img ng-src="{{setService.image[0]}}" width="50px" height="50px">
+            <img ng-src="{{setService.image[1]}}" width="50px" height="50px">
+            <div id="setContainer"></div>
         </div> 
     </ion-content>
+    
+    
     <div id="home-dropdown">
         <ul>
             <li id="button1">
@@ -24,6 +28,7 @@
                     <li><a href="#/modify" ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
                     <ul></ul>
                 </ul>
+            </li>
         </ul>
     </div> 
 </ion-view>

@@ -94,6 +94,7 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.saveSet = function() {
-		Sets.image = Photo.image;
+		Sets.image.push(Photo.image);
+		$rootScope.initSetList();
 	}
 }])

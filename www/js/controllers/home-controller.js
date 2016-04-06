@@ -2,7 +2,7 @@
 // Controls home page.
 // Injects: $scope, $rootScope, Photo, Sets
 
-app.controller('home-controller', ['$state', '$scope', 'Photo', 'Sets', function($state, $scope, Photo, Sets) {
+app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'Sets', function($state, $scope, $rootScope, Photo, Sets) {
     
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
@@ -70,7 +70,6 @@ app.controller('home-controller', ['$state', '$scope', 'Photo', 'Sets', function
     
     btn2.onclick = function() {
         enableSets();
-        console.log(Sets.image);
     }
 
     $(btn3).hover(
@@ -81,6 +80,16 @@ app.controller('home-controller', ['$state', '$scope', 'Photo', 'Sets', function
             $(this).removeClass("toggle-home-btn");
         }
     );
+    
+    $rootScope.initSetList = function() {
+        document.getElementById("setContainer").innerHTML = "";
+        
+        for(i = 0; i < Sets.image.length; i++) {
+            $scope.img = Sets.image[i];
+            document.getElementById("setContainer").innerHTML += "<img ng-src='{{setService.image[i]}}' width='50px' height='50px'>";
+        }
+    }
+    
     
     enableSets(); //Set tab is open by default
     
