@@ -82,12 +82,11 @@ app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'S
     );
     
     $rootScope.initSetList = function() {
-        document.getElementById("setContainer").innerHTML = "";
-        
+        $rootScope.stuff = ""
         for(i = 0; i < Sets.image.length; i++) {
-            $scope.img = Sets.image[i];
-            document.getElementById("setContainer").innerHTML += "<img ng-src='{{setService.image[i]}}' width='50px' height='50px'>";
+            $rootScope.stuff +=( " <img src='" + Sets.image[i] + "' width='50px' height='50px'> " + " <br> ");
         }
+        console.log(document.getElementById("setContainer").innerHTML);
     }
     
     
