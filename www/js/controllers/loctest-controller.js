@@ -3,7 +3,7 @@
 app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function($timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
     $scope.labels = Labels.labels;
 	$scope.testIndex = [];
-    $scope.photoService = Photo;
+    	$scope.photoService = Photo;
 	$scope.curIndex1 = 0;
 	$scope.curIndex2 = 0;
 	$scope.labelStyle = [];
@@ -81,5 +81,4 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
 		};
 	}
-
 }])

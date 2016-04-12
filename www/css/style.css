@@ -186,7 +186,7 @@
     transition: all .25s;
 }
 .toggle-home-btn {
-    background-color: #FFFFFF;   /*~~Styling*/
+    background-color: # FFFFFF;   /*~~Styling*/
 }
 .toggle-home-btn > a > span {
     color: #F79522;   /*~~More Styling*/
@@ -222,6 +222,7 @@
 }
 #label_name {
     position: relative;
+    overflow: scroll;
     display: inline-block;
     margin: 15px calc(8% + 170px) 15px calc(6.5% + 120px) !important;
 }
