@@ -186,10 +186,45 @@
     transition: all .25s;
 }
 .toggle-home-btn {
-    background-color: #FFFFFF;   /*~~Styling*/
+    background-color: # FFFFFF;   /*~~Styling*/
 }
 .toggle-home-btn > a > span {
     color: #F79522;   /*~~More Styling*/
+}
+
+/*~~~~~~~~~~~~~~~~*/
+/*Styling for loctest page
+/*~~~~~~~~~~~~~~~~*/
+
+#loctestShowAnswerButton {
+    position: absolute;   /*~~Positioning*/
+    padding: 10px 40px;
+    margin: 10px 0;
+    vertical-align: top;
+    line-height: 30px;
+    text-align: center;
+    right: 8%;    
+    width: 170px;
+    
+    -webkit-border-radius: 7.5px;   /*~~Styling*/
+    -moz-border-radius: 7.5px;
+    border-radius: 7.5px;
+    border: 1px solid #FFFFFF;
+    background-color: #F79522;
+    color: #FFFFFF;
+}
+.loctest_para {
+    position: absolute;
+    display: inline-block;
+    margin: 15px 4%;
+    margin-right: 2.5%;
+    width: 120px;
+}
+#label_name {
+    position: relative;
+    overflow: scroll;
+    display: inline-block;
+    margin: 15px calc(8% + 170px) 15px calc(6.5% + 120px) !important;
 }
 
 /*~~~~~~~~~~~~~~~~*/
