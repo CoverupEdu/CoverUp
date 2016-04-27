@@ -84,7 +84,7 @@ app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'S
     $rootScope.initSetList = function() {
         $rootScope.stuff = ""
         for(i = 0; i < Sets.image.length; i++) {
-            $rootScope.stuff +=( " <img src='" + Sets.image[i] + "' width='50px' height='50px'> " + " <br> ");
+            $rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + Sets.image[i] + "'><a>Edit</a><a>Learn</a><a>Test</a></div>" );
         }
         console.log(document.getElementById("setContainer").innerHTML);
     }

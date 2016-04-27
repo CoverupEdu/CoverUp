@@ -192,6 +192,56 @@
     color: #F79522;   /*~~More Styling*/
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*Styling for set page*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.setPhoto {
+    display: inline-block;
+    position: relative;
+    border: 1px solid white;   
+    background-color: #F79522;
+    
+    text-align: center;
+        
+    height: 20%;
+    width: 20%;
+        
+    margin: 0.8%;
+    padding: 0.8% 0.8% 3% 0.8%;
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+    -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+}
+
+.setPhoto > img {
+    height: 100%;
+    width: 100%;
+    
+    border: 1px solid white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    
+}
+
+.setPhoto > a {
+    position: relative;
+    display: inline-block;
+    color: white;
+    
+    height: 1%;
+    width: 25%;
+    
+    border: 1px solid white;
+    
+    margin: 4%;    
+}
+
 /*~~~~~~~~~~~~~~~~*/
 /*~~~~~~~~~~~~~~~~*/
 
