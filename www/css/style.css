@@ -192,6 +192,59 @@
     color: #F79522;   /*~~More Styling*/
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*Styling for set page*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.setPhoto {
+    display: inline-block;
+    position: relative;
+    border: 1px solid white;   
+    background-color: #F79522;
+    
+    text-align: center;
+        
+    height: 400px;
+    width: 285px;
+        
+    margin: 10px;
+    padding: 12px 12px 80px 12px;
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+    -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+}
+
+.setPhoto > img {
+    height: 100%;
+    width: 100%;
+    
+    border: 1px solid white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    
+}
+
+.setPhoto > a {
+    position: relative;
+    display: inline-block;
+    color: white;
+    font-size: 18px;
+    
+    width: 85px;
+        
+    padding: 24px 0 24px 0;
+}
+.setPhoto > a:nth-child(3) {
+    border-left: 1px solid #FFFFFF;
+    border-right: 1px solid #FFFFFF;
+}
+
+
 /*~~~~~~~~~~~~~~~~*/
 /*Styling for loctest page
 /*~~~~~~~~~~~~~~~~*/

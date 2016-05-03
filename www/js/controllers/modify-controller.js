@@ -1,7 +1,7 @@
 // CONTROLLER: modify-controller
 // Controls the modify page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
-app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', function($timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels) {
+app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;
     $scope.photoService = Photo;
 	$rootScope.labelEdit = false;
@@ -87,5 +87,14 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
 		$timeout(function() {
 			angular.element(el).triggerHandler('click');
 		}, 0);
+	}
+
+	//~~~~~~~~~~~~~~~~~
+	//Save Feature
+	//~~~~~~~~~~~~~~~~~
+	
+	$scope.saveSet = function() {
+		Sets.image.push(Photo.image);
+		$rootScope.initSetList();
 	}
 }])

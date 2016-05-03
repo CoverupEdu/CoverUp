@@ -4,9 +4,11 @@
             <h3>Market Stuff!</h3>
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <h3>Sets Stuff!</h3>
+            <div id="setContainer" ng-bind-html="stuff"></div>
         </div> 
     </ion-content>
+    
+    
     <div id="home-dropdown">
         <ul>
             <li id="button1" style="margin-right: calc(20% - 120px);"> <!-- Some inline css to ensure the buttons stretch apart dynamically -->
@@ -23,6 +25,7 @@
                     <li><a href="#/modify" ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
                     <ul></ul>
                 </ul>
+            </li>
         </ul>
     </div> 
 </ion-view>

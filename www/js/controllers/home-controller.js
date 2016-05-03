@@ -1,14 +1,16 @@
 // CONTROLLER: home-controller
 // Controls home page.
-// Injects: $scope, $rootScope, Photo 
+// Injects: $scope, $rootScope, Photo, Sets
 
-app.controller('home-controller', ['$state', '$scope', 'Photo', function($state, $scope, Photo) {
+app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'Sets', function($state, $scope, $rootScope, Photo, Sets) {
     
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
     var btn3 = document.getElementById("button3");
     var market = document.getElementById("market-content");
     var sets = document.getElementById("sets-content");
+    
+    $scope.setService = Sets;
         
     //~~~~~~~~~~~~~~~~~~~~
     //Home page photo control
@@ -78,6 +80,15 @@ app.controller('home-controller', ['$state', '$scope', 'Photo', function($state,
             $(this).removeClass("toggle-home-btn");
         }
     );
+    
+    $rootScope.initSetList = function() {
+        $rootScope.stuff = ""
+        for(i = 0; i < Sets.image.length; i++) {
+            $rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + Sets.image[i] + "'><a>Edit</a><a>Learn</a><a>Test</a></div>" );
+        }
+        console.log(document.getElementById("setContainer").innerHTML);
+    }
+    
     
     enableSets(); //Set tab is open by default
     
