@@ -52,12 +52,17 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
     }
 	
 	$rootScope.checkNull = function() {
-		if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
+		if ($scope.curIndex > 0) {
+			if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
+		}
 	}
 	
 	$scope.eventManage = function($event) {
 		$scope.addControl($event); 
-		//popup?
+		$timeout(function() {
+			$scope.clickButton($scope.labels.length - 1);
+		}, 0);
+		$rootScope.editButton();
 	}
 	
 	$scope.addControl = function(event) {
@@ -65,10 +70,6 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
         $scope.xpos = (event.offsetX) / (0.01 * document.getElementById('imagecont').getBoundingClientRect().width);
         $scope.ypos = (event.offsetY) / (0.01 * document.getElementById('imagecont').getBoundingClientRect().height);
         Labels.addLabel($scope.xpos, $scope.ypos, "");
-		$timeout(function() {
-			$scope.clickButton($scope.labels.length - 1);
-		}, 0);
-		$rootScope.editButton();
 	}
 	
     $scope.openPopover = function(event, index) {
@@ -78,12 +79,14 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
 		$scope.curIndex = index;
 		$rootScope.insReset();
         $scope.popover.show(event);
-		$rootScope.textFocus();
+		$timeout(function() {
+			$rootScope.textFocus();
+		})
 		$rootScope.curLabel = $scope.labels[$scope.curIndex].label;
     }
 	
 	$scope.clickButton = function(ind) {
-		var el = document.getElementById('button'+ind.toString());
+		var el = document.getElementById('labelbutton'+ind.toString());
 		$timeout(function() {
 			angular.element(el).triggerHandler('click');
 		}, 0);
