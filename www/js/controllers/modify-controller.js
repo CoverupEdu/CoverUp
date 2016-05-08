@@ -1,7 +1,7 @@
 // CONTROLLER: modify-controller
 // Controls the modify page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
-app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
+app.controller('modify-controller', ['$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;
     $scope.photoService = Photo;
 	$rootScope.labelEdit = false;
@@ -52,9 +52,7 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
     }
 	
 	$rootScope.checkNull = function() {
-		if ($scope.curIndex > 0) {
 			if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
-		}
 	}
 	
 	$scope.eventManage = function($event) {
@@ -73,15 +71,18 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
 	}
 	
     $scope.openPopover = function(event, index) {
+		$timeout(function() {
+			$ionicScrollDelegate.scrollTo(0, $scope.labels[index].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height - 50, true)
+		},50)
 		$rootScope.popOpen = true;
 		$scope.checkFocused=true;
         $scope.index = {value:index};
 		$scope.curIndex = index;
 		$rootScope.insReset();
-        $scope.popover.show(event);
 		$timeout(function() {
-			$rootScope.textFocus();
-		})
+			$scope.popover.show(event);
+		}, 400)
+		$rootScope.textFocus();
 		$rootScope.curLabel = $scope.labels[$scope.curIndex].label;
     }
 	
