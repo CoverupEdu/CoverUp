@@ -1,7 +1,7 @@
 // CONTROLLER: modify-controller
 // Controls the modify page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
-app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', function($timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels) {
+app.controller('modify-controller', ['$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;
     $scope.photoService = Photo;
 	$rootScope.labelEdit = false;
@@ -52,12 +52,15 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
     }
 	
 	$rootScope.checkNull = function() {
-		if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
+			if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
 	}
 	
 	$scope.eventManage = function($event) {
 		$scope.addControl($event); 
-		//popup?
+		$timeout(function() {
+			$scope.clickButton($scope.labels.length - 1);
+		}, 0);
+		$rootScope.editButton();
 	}
 	
 	$scope.addControl = function(event) {
@@ -65,27 +68,37 @@ app.controller('modify-controller', ['$timeout', '$rootScope', '$window', '$ioni
         $scope.xpos = (event.offsetX) / (0.01 * document.getElementById('imagecont').getBoundingClientRect().width);
         $scope.ypos = (event.offsetY) / (0.01 * document.getElementById('imagecont').getBoundingClientRect().height);
         Labels.addLabel($scope.xpos, $scope.ypos, "");
-		$timeout(function() {
-			$scope.clickButton($scope.labels.length - 1);
-		}, 0);
-		$rootScope.editButton();
 	}
 	
     $scope.openPopover = function(event, index) {
+		$timeout(function() {
+			$ionicScrollDelegate.scrollTo(0, $scope.labels[index].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height - 50, true)
+		},50)
 		$rootScope.popOpen = true;
 		$scope.checkFocused=true;
         $scope.index = {value:index};
 		$scope.curIndex = index;
 		$rootScope.insReset();
-        $scope.popover.show(event);
+		$timeout(function() {
+			$scope.popover.show(event);
+		}, 400)
 		$rootScope.textFocus();
 		$rootScope.curLabel = $scope.labels[$scope.curIndex].label;
     }
 	
 	$scope.clickButton = function(ind) {
-		var el = document.getElementById('button'+ind.toString());
+		var el = document.getElementById('labelbutton'+ind.toString());
 		$timeout(function() {
 			angular.element(el).triggerHandler('click');
 		}, 0);
+	}
+
+	//~~~~~~~~~~~~~~~~~
+	//Save Feature
+	//~~~~~~~~~~~~~~~~~
+	
+	$scope.saveSet = function() {
+		Sets.image.push(Photo.image);
+		$rootScope.initSetList();
 	}
 }])

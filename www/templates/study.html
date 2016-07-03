@@ -3,7 +3,7 @@
 		<div id="imghld2" class="img-holder">
 			<img id="imagecont2" class="image" ng-click="switchOpenAll(false)" ng-src="{{photoService.image}}">
 			<button ng-if="!openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-click="openPopover($event, $index)" ng-style="labelStyle[$index]"></button>
-            <button ng-if="openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-style="labelStyle[$index]"><div style="background-color:white; position:absolute; top:15px; right:-55px; height:30px;border-radius:3px; min-width:150px; color:black; font-size:25px; max-height:37px;vertical-align:middle;line-height:25px;">{{label.label}}</div></button>
+            <button ng-if="openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-style="labelStyle[$index]"><div class="fakePop">{{label.label}}</div></button>
 		</div>
 	</ion-content>
  <div style="position:fixed; bottom:0%; right:0%; width:82px; height:73px; background-color:white; border-radius:3px">
@@ -11,4 +11,3 @@
     	<button ng-if="openAll" style="font-size:75px;color:#24A1D4" class="ion-eye-disabled button button-clear button-bold button-coverupOrange" value="Show All" ng-click="switchOpenAll(!openAll)"></button>
 </div>
 </ion-view>
-

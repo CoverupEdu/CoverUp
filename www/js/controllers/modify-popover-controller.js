@@ -8,7 +8,7 @@ app.controller('modify-popover-controller', function($scope, $ionicPopover, $roo
 			if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
 			  cordova.plugins.Keyboard.show(); //open keyboard manually
 			}
-		  }, 350);
+		  }, 500);
 	}};
 	
 	$scope.$on('popover.hidden', function() {
