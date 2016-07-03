@@ -1,7 +1,7 @@
 // CONTROLLER: modify-controller
 // Controls the modify page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
-app.controller('modify-controller', ['$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
+app.controller('modify-controller', ['$ionicLoading', '$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($ionicLoading, $location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;
     $scope.photoService = Photo;
 	$rootScope.labelEdit = false;
@@ -98,7 +98,47 @@ app.controller('modify-controller', ['$location', '$anchorScroll', '$timeout', '
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.saveSet = function() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+        fs.root.getDirectory(
+            "CoverUp",
+            {
+                create: true
+            },
+            function(dirEntry) {
+                dirEntry.getFile(
+                    "test.png", 
+                    {
+                        create: true, 
+                        exclusive: false
+                    }, 
+                    function gotFileEntry(fe) {
+                        var p = fe.toURL();
+                        fe.remove();
+                        ft = new FileTransfer();
+                        ft.download(
+                            encodeURI("http://ionicframework.com/img/ionic-logo-blog.png"),
+                            p,
+                            function(entry) {
+                                $ionicLoading.hide();
+                                $scope.imgFile = entry.toURL();
+                            },
+                            function(error) {
+                            },
+                            false,
+                            null
+                        );
+                    }, 
+                    function() {
+                    }
+                );
+            }
+        );
+    },
+    function() {
+    });
+		/*
 		Sets.image.push(Photo.image);
 		$rootScope.initSetList();
+		*/
 	}
 }])

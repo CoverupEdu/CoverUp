@@ -8,14 +8,14 @@
         </div> 
     </ion-content>
     
-    
+   
     <div id="home-dropdown">
         <ul>
 		<li id="button3" style="margin-right: calc(20% - 120px);"> <!-- Same as above -->
                 <a href="#"><span><i class="ion-plus-round"></i></span><span>Create</span></a>
                 <ul>
-                    <li><a href="#"><span>From Gallery</span></a></li>
-                    <li><a href="#"><span>Take Photo</span></a></li>
+                    <li><a href="#/modify" ng-click="takePhotoFromGallery()"><span>From Gallery</span></a></li>
+                    <li><a href="#/modify" ng-click="takePhoto()"><span>Take Photo</span></a></li>
                     <li><a href="#/modify" ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
                     <ul></ul>
                 </ul>
