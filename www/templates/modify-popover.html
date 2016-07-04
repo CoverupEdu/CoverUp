@@ -1,12 +1,12 @@
 <ion-popover-view ng-controller="modify-popover-controller" class="label-popover">
     <div class="modPop">
-        <h3 ng-hide="labelEdit" class="title">{{labels[curIndex].label}}</h3>
-	<input id="textEntry" type="text" ng-show="labelEdit" ng-model="insLabel" focus-me autofocus="autofocus">
+        <h3 ng-hide="canEditLabel" class="title">{{labels[curIndex].label}}</h3>
+	<input id="textEntry" type="text" ng-show="canEditLabel" ng-model="insLabel" focus-me autofocus="autofocus">
 	<button     ng-class="editStyle()" 
                 ng-click="editButton()" 
                 ng-style={"margin-right":"30px"}></button>
     <button     class="button energized button-icon icon ion-trash-a" 
-                ng-click="swapLabelEdit(false); deleteLabel()" 
+                ng-click="swapcanEditLabel(false); deleteLabel()" 
                 ng-style={"margin-left":"30px"}></button>
     </div>
 </ion-popover-view>
