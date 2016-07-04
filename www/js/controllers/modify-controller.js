@@ -98,7 +98,9 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.saveSet = function() {
-		$cordovaFile.copyFile($rootScope.sourceDirectory, $rootScope.sourceFileName, $rootScope.targetDirectory, $rootScope.sourceFileName).then(function(success) {
+		$cordovaFile.copyFile(
+			$rootScope.sourceDirectory, $rootScope.sourceFileName, $rootScope.targetDirectory, $rootScope.sourceFileName //source directory, source file name, target directory, target file name (here same as source)
+		).then(function(success) {
 			$rootScope.fileName = $rootScope.targetDirectory + $rootScope.sourceFileName;
 		})
 		Sets.image.push(Photo.image);
