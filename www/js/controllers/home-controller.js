@@ -40,8 +40,12 @@ app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'S
         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY 
         };
         
-        Photo.getPicture(options).then(function (imageURI) {
-            Photo.setImage(imageURI);
+        Photo.getPicture(options).then(function (sourcePath) {
+			$rootScope.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
+			$rootScope.targetDirectory = $rootScope.sourceDirectory.substring(0, $rootScope.sourceDirectory.length - 6) + "files/";
+			$rootScope.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
+            Photo.setImage(sourcePath);
+            $scope.photo = Photo.image;
         }, null);
     }
     
