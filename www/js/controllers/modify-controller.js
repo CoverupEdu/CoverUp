@@ -1,7 +1,7 @@
 // CONTROLLER: modify-controller
 // Controls the modify page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
-app.controller('modify-controller', ['$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
+app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($cordovaFile, $ionicLoading, $location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;
     $scope.photoService = Photo;
 	$rootScope.labelEdit = false;
@@ -98,6 +98,11 @@ app.controller('modify-controller', ['$location', '$anchorScroll', '$timeout', '
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.saveSet = function() {
+		$cordovaFile.copyFile(
+			$rootScope.sourceDirectory, $rootScope.sourceFileName, $rootScope.targetDirectory, $rootScope.sourceFileName //source directory, source file name, target directory, target file name (here same as source)
+		).then(function(success) {
+			$rootScope.fileName = $rootScope.targetDirectory + $rootScope.sourceFileName;
+		})
 		Sets.image.push(Photo.image);
 		$rootScope.initSetList();
 	}
