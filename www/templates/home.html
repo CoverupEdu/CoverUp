@@ -4,25 +4,29 @@
             <h3>Market Stuff!</h3>
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <h3>Sets Stuff!</h3>
+            <div id="setContainer" ng-bind-html="stuff"></div>
         </div> 
     </ion-content>
+    
+   
     <div id="home-dropdown">
         <ul>
-            <li id="button1" style="margin-right: calc(20% - 120px);"> <!-- Some inline css to ensure the buttons stretch apart dynamically -->
-               <a href="#"><span><i class="ion-bag"></i></span><span>Marketplace</span></a>
-            </li>
-            <li id="button2">
-                <a href="#"><span><i class="ion-person"></i></span><span>My Sets</span></a>
-            </li>
-            <li id="button3" style="margin-left: calc(20% - 120px);"> <!-- Same as above -->
+		<li id="button3" style="margin-right: calc(20% - 120px);"> <!-- Same as above -->
                 <a href="#"><span><i class="ion-plus-round"></i></span><span>Create</span></a>
                 <ul>
-                    <li><a href="#"><span>From Gallery</span></a></li>
-                    <li><a href="#"><span>Take Photo</span></a></li>
+                    <li><a href="#/modify" ng-click="takePhotoFromGallery()"><span>From Gallery</span></a></li>
+                    <li><a href="#/modify" ng-click="takePhoto()"><span>Take Photo</span></a></li>
                     <li><a href="#/modify" ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
                     <ul></ul>
                 </ul>
+            </li>
+            <li id="button1"> <!-- Some inline css to ensure the buttons stretch apart dynamically -->
+               <a href="#"><span><i class="ion-bag"></i></span><span>Marketplace</span></a>
+            </li>
+            <li id="button2" style="margin-left: calc(20% - 120px);">
+                <a href="#"><span><i class="ion-person"></i></span><span>My Sets</span></a>
+            </li>
+            
         </ul>
     </div> 
 </ion-view>
