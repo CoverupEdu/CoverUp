@@ -3,7 +3,7 @@
 app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function($timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
     $scope.labels = Labels.labels;
 	$scope.testIndex = [];
-    	$scope.photoService = Photo;
+    $scope.photoService = Photo;
 	$scope.curIndex1 = 0;
 	$scope.curIndex2 = 0;
 	$scope.labelStyle = [];
@@ -12,6 +12,8 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	$scope.crossLoc;
 	$scope.showCross = false;
 	$scope.showButtons = true;
+	
+	var toggle_answer_btn = document.getElementById("loctestShowAnswerButton");
 
 	$timeout(function() {
 		for (var i = 0; i < $scope.labels.length; i++) {
@@ -41,26 +43,45 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 		else if ($scope.showButtons && !button) {}
 		else {
 			$scope.showResult = true;
+			
 			if (!button) {
 				var x = Math.pow((event.offsetX - ($scope.labels[$scope.curIndex2].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width)), 2) +
 						Math.pow((event.offsetY - ($scope.labels[$scope.curIndex2].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height)), 2);
-				if (x <= 6400) {$scope.answerResult = true;} 
-				else {$scope.answerResult = false;}
+				if (x <= 6400) {
+					$scope.answerResult = true;
+				} 
+				else {
+					$scope.answerResult = false;
+				}
+				
 				$scope.crossLoc = {
 					left: (event.offsetX  + 'px'),
 					top: (event.offsetY + 'px')
 				};
-			} else {
-				if ($scope.curIndex2 == num) {$scope.answerResult = true;}
-				else {$scope.answerResult = false;}
+			}
+			
+			else {
+				
+				if ($scope.curIndex2 == num) {
+					$scope.answerResult = true;
+				}
+				else {
+					$scope.answerResult = false;
+				}
+				
 				$scope.crossLoc = {
 						left: ($scope.labelStyle[num].left),
 						top: ($scope.labelStyle[num].top)
-					};
+				};
 			}
+			
 			$scope.showTick = true;
-			if ($scope.answerResult == false) {$scope.showCross = true;}
-			else {$scope.showCross = false;}
+			if ($scope.answerResult == false) {
+				$scope.showCross = true;
+			}
+			else {
+				$scope.showCross = false;
+			}
 		}
 	}
 	
@@ -80,5 +101,10 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 			left: ($scope.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
 			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
 		};
+	}
+	
+	toggle_answer_btn.onclick = function() {
+		toggle_answer_btn.classList.toggle("toggle_show_btn");
+		//$scope.labels[$scope.curIndex2].click();
 	}
 }])
