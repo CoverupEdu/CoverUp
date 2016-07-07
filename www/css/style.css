@@ -186,7 +186,7 @@
     transition: all .25s;
 }
 .toggle-home-btn {
-    background-color: # FFFFFF;   /*~~Styling*/
+    background-color: #FFFFFF;   /*~~Styling*/
 }
 .toggle-home-btn > a > span {
     color: #F79522;   /*~~More Styling*/
