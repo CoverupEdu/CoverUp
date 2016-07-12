@@ -12,6 +12,7 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	$scope.crossLoc;
 	$scope.showCross = false;
 	$scope.showButtons = true;
+	$scope.answer_toggled = false;
 	
 	var toggle_answer_btn = document.getElementById("loctestShowAnswerButton");
 
@@ -26,12 +27,18 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	$scope.selectLabel = function() {
 		if ($scope.testIndex.length == 0) {
 			console.log("unfinished");
-		} else {
+		} 
+		else {
 			$scope.curIndex1 = Math.floor($scope.testIndex.length * Math.random());
 			$scope.curIndex2 = $scope.testIndex[$scope.curIndex1];
 		}
+		if ($scope.answer_toggled == true) { /*This toggles back the styling of the show answer button after the timeout reset once you've clicked it.*/
+			toggle_answer_btn.classList.toggle("toggle_show_btn");
+			$scope.answer_toggled == false;
+		}
 	}
 	
+	/*Sorry this function has ended up so expanded - It was getting headachy to read it*/
 	$scope.clickManage = function(event, num, button) {
 		if ($scope.showResult) {
 			$scope.showResult = false;
@@ -103,8 +110,12 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 		};
 	}
 	
+	/*Function simulates a click on the correct label and also toggles the styling of the button.*/
 	toggle_answer_btn.onclick = function() {
 		toggle_answer_btn.classList.toggle("toggle_show_btn");
-		//$scope.labels[$scope.curIndex2].click();
+		$scope.answer_toggled = true;
+		$timeout(function() {
+			angular.element(document.getElementById('locbutton'+$scope.curIndex2.toString())).triggerHandler('click');
+		}, 0);
 	}
 }])

@@ -11,6 +11,7 @@
 			<div ng-repeat="label in labels"
 			style="margin-top:-23px !important; margin-left:-20px !important" 
 			class="button energized button-icon icon ion-ios-circle-filled label"   
+			id="locbutton{{$index}}"
 			ng-click="clickManage($event, $index, true)" 
 			ng-style="labelStyle[$index]"></div></div>
 			
