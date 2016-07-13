@@ -118,7 +118,8 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 		).then(function(success) {
 			$rootScope.fileName = $rootScope.targetDirectory + $rootScope.sourceFileName;
 		})
-		Sets.image.push(Photo.image);
+		Sets.setImage(Photo.image);
+		Sets.setLabels($scope.labels);
 		$rootScope.initSetList();
 	}
 }])
