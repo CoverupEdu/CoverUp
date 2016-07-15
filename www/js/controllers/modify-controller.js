@@ -1,6 +1,6 @@
 /*CONTROLLER: modify-controller
 Controls the modify page.
-Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
+Injects: $scope, $rootScope, $ionicPopover, Photo, Labels, Sets
 Comments refer to content above */
 app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($cordovaFile, $ionicLoading, $location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;		//mirror general labels to local copy
@@ -120,5 +120,6 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 		})
 		Sets.setImage(Photo.image);
 		Sets.setLabels($scope.labels);
+		console.log($rootScope.setService.image.length);
 	}
 }])
