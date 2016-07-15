@@ -89,14 +89,6 @@ app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'S
         }
     );
     
-    $rootScope.initSetList = function() {
-        $rootScope.stuff = ""
-        for(i = 0; i < Sets.image.length; i++) {
-            $rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + Sets.image[i] + "'><a>Edit</a><a>Learn</a><a>Test</a></div>" );
-        }
-    }
-    
-    
     enableSets(); //Set tab is open by default
     
 }]);

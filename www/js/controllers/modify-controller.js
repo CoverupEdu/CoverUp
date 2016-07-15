@@ -120,6 +120,5 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 		})
 		Sets.setImage(Photo.image);
 		Sets.setLabels($scope.labels);
-		$rootScope.initSetList();
 	}
 }])

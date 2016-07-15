@@ -3,9 +3,18 @@
         <div id="market-content">   <!-- Put stuff inside this to change the content of the market tab! -->
             <h3>Market Stuff!</h3>
         </div>
+        
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <div id="setContainer" ng-bind-html="stuff"></div>
+            <div id="setContainer"></div>
+                <div ng-repeat="x in setService.image" class="setPhoto"><!--
+                    --><img ng-src="{{setService.image[$index]}}"><!--
+                    --><a>Edit</a><!--
+                    --><a>Learn</a><!--
+                    --><a>Test</a>
+                </div>
+            </div>
         </div> 
+        
     </ion-content>
     
    
