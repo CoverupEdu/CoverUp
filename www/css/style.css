@@ -204,11 +204,11 @@
     
     text-align: center;
         
-    height: 400px;
+    height: 460px;
     width: 285px;
         
     margin: 10px;
-    padding: 12px 12px 80px 12px;
+    padding: 12px 12px 140px 12px;
     
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -226,7 +226,28 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+.setPhoto > p:nth-child(1) {
+    padding: 8px 0 8px 0;
+    margin: 0;
+    width: 100%;
     
+    position: relative;
+    display: block;
+    color: white;
+    font-size: 20px;
+}
+
+.setPhoto > p:nth-child(2) {
+    padding: 0px 0 8px 0;
+    margin: 0;
+    width: 100%;
+    
+    position: relative;
+    display: block;
+    color: #F2F2F2;
+    font-size: 12px;
 }
 
 .setPhoto > a {
@@ -248,7 +269,7 @@
     color: #F79522;
     background-color: #FFFFFF;
 }
-.setPhoto > a:nth-child(3) {
+.setPhoto > a:nth-child(5) {
     border-left: 1px solid #FFFFFF;
     border-right: 1px solid #FFFFFF;
 }
