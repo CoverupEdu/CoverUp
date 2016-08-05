@@ -5,27 +5,28 @@
   
 	<ion-content class="content-positive">
 		<div id="imghld2" class="img-holder">
-			<img id="imagecont2" ng-click="clickManage($event, 0, false)" class="image" ng-src="{{photoService.image}}">
+			<img id="imagecont2" ng-click="clickManage($event, 0, false, true)" class="image" ng-src="{{photoService.image}}">
 			
 			<div ng-if="!showResult && showButtons">
 			<div ng-repeat="label in labels"
 			style="margin-top:-23px !important; margin-left:-20px !important" 
 			class="button energized button-icon icon ion-ios-circle-filled label"   
-			ng-click="clickManage($event, $index, true)" 
+			id="locbutton{{$index}}"
+			ng-click="clickManage($event, $index, true, true)" 
 			ng-style="labelStyle[$index]"></div></div>
 			
 			<img src="img/tick.png"
 			ng-if="showTick"
 			class="label" 
 			style="width:30px;height:30px;margin-top:-15px !important; margin-left:-15px !important"
-			ng-click="clickManage($event, 0, true)" 
+			ng-click="clickManage($event, 0, true, true)" 
 			ng-style="labelStyle[curIndex2]"></img>
 			
 			<img src="img/cross.png"
 			ng-if="showCross"
 			class="label" 
 			style="width:30px;height:30px;margin-top:-15px !important; margin-left:-15px !important"
-			ng-click="clickManage($event, 0, true)" 
+			ng-click="clickManage($event, 0, true, true)" 
 			ng-style="crossLoc"></img>
 			
 		</div>
@@ -34,7 +35,7 @@
 <div class="bar bar-footer bar-coverupOrange" style="height: 80px !important; font-size: 20px;">
         <p class="loctest_para">Tap the<br>location of:</p>
         <p id="label_name">{{labels[curIndex2].label}}</p>
-        <button id="loctestShowAnswerButton"><span>Show Answer</span></button>
+        <button id="loctestShowAnswerButton" ><span ng-bind="showAnsText"></span></button>
 </div>
 </ion-view>
 
