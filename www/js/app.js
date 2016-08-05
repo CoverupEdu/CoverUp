@@ -6,7 +6,8 @@
 var app = angular.module('starter', ['ionic', 'ngCordova']);
 app.run(function($ionicPlatform, $rootScope) {
     $ionicPlatform.ready(function() {
-        if(window.cordova && window.cordova.plugins.Keyboard) {
+        $rootScope.curDir = "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+		if(window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
