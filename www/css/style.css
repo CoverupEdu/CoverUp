@@ -186,7 +186,7 @@
     transition: all .25s;
 }
 .toggle-home-btn {
-    background-color: # FFFFFF;   /*~~Styling*/
+    background-color: #FFFFFF;   /*~~Styling*/
 }
 .toggle-home-btn > a > span {
     color: #F79522;   /*~~More Styling*/
@@ -278,6 +278,18 @@
     overflow: scroll;
     display: inline-block;
     margin: 15px calc(8% + 170px) 15px calc(6.5% + 120px) !important;
+}
+.toggle_show_btn, .toggle_show_btn > span {   /*This class gets toggled when a button is hovered over / clicked*/
+    -webkit-transition: all .25s;   /*~~Animations*/
+    -moz-transition: all .25s;
+    -o-transition: all .25s;
+    transition: all .25s;
+}
+.toggle_show_btn {
+    background-color: #FFFFFF !important;   /*~~Styling*/
+}
+.toggle_show_btn > span {
+    color: #F79522;   /*~~More Styling*/
 }
 
 /*~~~~~~~~~~~~~~~~*/
