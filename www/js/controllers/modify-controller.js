@@ -1,15 +1,23 @@
 /*CONTROLLER: modify-controller
 Controls the modify page.
-Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
 Comments refer to content above */
-app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($state, customFileIO, $cordovaFile, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
-    $scope.labels = Labels.labels;		//mirror general labels to local copy
+app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$cordovaFile', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function(globalData, $state, customFileIO, $cordovaFile, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
+    Labels.labels;		//mirror general labels to local copy
     $scope.photoService = Photo;		
-	$rootScope.canEditLabel = false;	//var for whether label can be edited
+	globalData.canEditLabel = false;	//var for whether label can be edited
 	$scope.curIndex = 0;				//var determining which label the popover is assigned to			
-	$rootScope.curLabel;				//the actual name of the label specified by curIndex			
+	globalData.curLabel;				//the actual name of the label specified by curIndex			
 	$scope.labelStyle = [];				//array of coordinates of each label
-	$rootScope.popOpen = false;			//boolean for determining whether popover is shown
+	globalData.popOpen = false;			//boolean for determining whether popover is shown
+	$scope.labels = Labels.labels;
+	
+	$scope.$watch(function() { 
+		return Labels.labels;
+		}, function(newValue, oldValue) {
+			$scope.labels = newValue;
+			console.log($scope.labels);
+		}
+	);
 	
 	$ionicPopover.fromTemplateUrl('templates/modify-popover.html', {
         scope: $scope
@@ -29,7 +37,7 @@ app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '
     */
 	
 	$scope.setStyleAll = function() {
-		for (i = 0; i < $scope.labels.length; i++) {
+		for (i = 0; i < Labels.length; i++) {
 			$scope.setStyle(i);
 		}
 	}
@@ -38,8 +46,8 @@ app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '
 	
 	$scope.setStyle = function(val) {
 		$scope.labelStyle[val] = {
-			left: ($scope.labels[val].x * 0.01 * document.getElementById('imagecont').getBoundingClientRect().width + 'px'),
-			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height + 'px')
+			left: (Labels.labels[val].x * 0.01 * document.getElementById('imagecont').getBoundingClientRect().width + 'px'),
+			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height + 'px')
 		};
 	}
 	
@@ -51,14 +59,8 @@ app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '
 		$scope.setStyleAll();
 	}
 	
-    $scope.swapcanEditLabel = function(boole) {
-        if (boole) {$rootScope.canEditLabel = !$rootScope.canEditLabel;}
-        else {$rootScope.canEditLabel = false;}
-        $scope.labels[$scope.curIndex].label = $rootScope.curLabel;
-    }
-	
 	$rootScope.checkNull = function() {
-			if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
+			if (Labels.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
 	}
 	
 	//if the label is empty, the label(/button) is deleted.
@@ -66,7 +68,7 @@ app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '
 	$scope.eventManage = function($event) {
 		$scope.addControl($event); 
 		$timeout(function() {
-			$scope.clickButton($scope.labels.length - 1);
+			$scope.clickButton(Labels.labels.length - 1);
 		}, 0);
 		$rootScope.editButton();
 	}
@@ -84,17 +86,17 @@ app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '
 	
     $scope.openPopover = function(event, index) {
 		$timeout(function() {
-			$ionicScrollDelegate.scrollTo(0, $scope.labels[index].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height - 50, true)
+			$ionicScrollDelegate.scrollTo(0, Labels.labels[index].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height - 50, true)
 		},50)
-		$rootScope.popOpen = true;
+		globalData.popOpen = true;
         $scope.index = {value:index};
 		$scope.curIndex = index;
 		$rootScope.insReset();
 		$timeout(function() {
 			$scope.popover.show(event);
-		}, 400)
+		}, 200)
 		$rootScope.textFocus();
-		$rootScope.curLabel = $scope.labels[$scope.curIndex].label;
+		globalData.curLabel = Labels.labels[$scope.curIndex].label;
     }
 
 	//scroll to label, open popover, set current label as clicked label, 'focus' text (i.e. textbox is selected)

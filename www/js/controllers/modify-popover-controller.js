@@ -1,8 +1,15 @@
-app.controller('modify-popover-controller', function($scope, $ionicPopover, $rootScope, $timeout) {
+app.controller('modify-popover-controller', ['globalData', '$scope', '$ionicPopover', '$rootScope', '$timeout', function(globalData, $scope, $ionicPopover, $rootScope, $timeout) {
 	$scope.insLabel;	//currently entered label while in edit mode.
 
-	$rootScope.textFocus = function(){
-		if ($rootScope.canEditLabel) {
+	$scope.$watch(function() { 
+		return globalData.canEditLabel;
+		}, function(newValue, oldValue) {
+			$scope.canEditLabel = newValue;
+		}
+	);
+	
+	$rootScope.textFocus = function(){		//
+		if (globalData.canEditLabel) {
 			$timeout(function () {
 			document.getElementById('textEntry').focus();
 			if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -15,11 +22,11 @@ app.controller('modify-popover-controller', function($scope, $ionicPopover, $roo
 	
 	$scope.$on('popover.hidden', function() {
 		$rootScope.editButton();
-		if ($rootScope.canEditLabel) {$rootScope.canEditLabel = false;}
+		if (globalData.canEditLabel) {globalData.canEditLabel = false;}
 		$timeout(function() {
-			if ($rootScope.popOpen) {
+			if (globalData.popOpen) {
 				$rootScope.checkNull();
-				$rootScope.popOpen = false;
+				globalData.popOpen = false;
 			}
 		})
 	});
@@ -27,7 +34,7 @@ app.controller('modify-popover-controller', function($scope, $ionicPopover, $roo
 	//save currently entered label, set edit mode to false for next label, and delete popover if label is null.
 	
 	$scope.editStyle = function() {
-		if ($rootScope.canEditLabel) {
+		if (globalData.canEditLabel) {
 			return "button energized button-icon icon ion-android-done";
 		} else {
 			return "button energized button-icon icon ion-edit";
@@ -37,12 +44,12 @@ app.controller('modify-popover-controller', function($scope, $ionicPopover, $roo
 	//define how edit button looks whether in edit/view mode for label.
 	
 	$rootScope.editButton = function() {
-		$rootScope.curLabel = $scope.insLabel;
-		if (!$rootScope.canEditLabel) {
+		globalData.curLabel = $scope.insLabel;
+		if (!globalData.canEditLabel) {
 			$scope.insLabel = $scope.labels[$scope.curIndex].label;
 		}
-		else {$scope.labels[$scope.curIndex].label = $rootScope.curLabel;}
-		$rootScope.canEditLabel = !$rootScope.canEditLabel;
+		else {$scope.labels[$scope.curIndex].label = globalData.curLabel;}
+		globalData.canEditLabel = !globalData.canEditLabel;
 		$rootScope.textFocus();
 	};
 	
@@ -53,4 +60,4 @@ app.controller('modify-popover-controller', function($scope, $ionicPopover, $roo
 	$rootScope.insReset = function() {
 		$scope.insLabel = "";
 	}
-});
+}]);

@@ -4,8 +4,13 @@
             <h3>Market Stuff!</h3>
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <div id="setContainer" ng-bind-html="stuff"></div>
-        </div> 
+            <div ng-repeat="image in previewImages" class = 'setPhoto'>
+				<!-- set title?-->
+				<img ng-src = "{{previewImages[$index]}}">
+				<a ng-click="editButton($index)">Edit</a><a ng-click="learnButton($index)">Learn</a><a ng-click="testButton($index)">Test</a>
+			</div>
+			<p ng-repeat="image in previewImages">text</p>
+       </div> 
     </ion-content>
     
    
@@ -14,9 +19,9 @@
 		<li id="button3" style="margin-right: calc(20% - 120px);"> <!-- Same as above -->
                 <a href="#"><span><i class="ion-plus-round"></i></span><span>Create</span></a>
                 <ul>
-                    <li><a href="#/modify" ng-click="takePhotoFromGallery()"><span>From Gallery</span></a></li>
-                    <li><a href="#/modify" ng-click="takePhoto()"><span>Take Photo</span></a></li>
-                    <li><a href="#/modify" ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
+                    <li><a ng-click="takePhotoFromGallery()"><span>From Gallery</span></a></li>
+                    <li><a ng-click="takePhoto()"><span>Take Photo</span></a></li>
+                    <li><a ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
                     <ul></ul>
                 </ul>
             </li>

@@ -1,48 +1,41 @@
 // SERVICE: customFileIO
 // Contains functions for file input/output.
-app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$cordovaFile', function($interval, $state, $timeout, $rootScope, $cordovaFile) {
+app.service('customFileIO', ['globalData', '$interval', '$state', '$timeout', '$rootScope', '$cordovaFile', function(globalData, $interval, $state, $timeout, $rootScope, $cordovaFile) {
     var self = this;
 	self.loop;
 	
-	this.emitReady = function() {		//not strictly related to file io but just here for convenience
-		$rootScope.$emit('appIsReady');
-	}
-	
 	self.loadDirList = function() {
-		$rootScope.dirList = [];
-		$rootScope.previewImages = [];
+		globalData.dirList = [];
+		globalData.previewImages = [];
 		var quantity = 0;
-		$cordovaFile.readAsText($rootScope.curDir, "dir.txt")
+		$cordovaFile.readAsText(globalData.curDir, "dir.txt")
 		.then(function (success) {
 			var mainString = success;
 			quantity = mainString.split('/').length - 1;
 			for (var i = 1; i < quantity; i++) {
 				console.log("ayy");
-				$rootScope.dirList.push(mainString.substring(0, mainString.indexOf('/') + 1));
+				globalData.dirList.push(mainString.substring(0, mainString.indexOf('/') + 1));
 				mainString = mainString.substring(mainString.indexOf('/') + 1);
 			}
-			$rootScope.dirList.push(mainString);
+			globalData.dirList.push(mainString);
 		}, function(error) {
 			console.log(error);
 		}).then(function() {
 			console.log(quantity);
-			console.log($rootScope.dirList);
+			console.log(globalData.dirList);
 			var prefix;
-			$rootScope.stuff = ""
-			for (var i = 0; i < $rootScope.dirList.length; i++) {
-				prefix = $rootScope.dirList[i].substring(0,3);
+			for (var i = 0; i < globalData.dirList.length; i++) {
+				prefix = globalData.dirList[i].substring(0,3);
 				if(prefix == "img") {
-					$rootScope.previewImages[i] = 
-						$rootScope.curDir + 
-						$rootScope.dirList[i] + 
+					globalData.previewImages[i] = 
+						globalData.curDir + 
+						globalData.dirList[i] + 
 						"Image" + 
-						$rootScope.dirList[i].substring(3).split('/')[0] +
+						globalData.dirList[i].substring(3).split('/')[0] +
 						".jpg";
-					$rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + $rootScope.previewImages[i] + "'><a>Edit</a><a>Learn</a><a>Test</a></div>" );
 				}
 				else if(prefix == "dir") {
-					$rootScope.previewImages[i] = "img/folder.jpg";
-					$rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + $rootScope.previewImages[i] + "'><a>Options</a><a>Open</a><a>Delete</a></div>" );
+					globalData.previewImages[i] = "img/folder.jpg";
 				}
 				else {console.log(prefix)};
 			}
@@ -55,23 +48,23 @@ app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$
 		var filename = self.chooseRandomName(); 					//name entered while saving goes here
 		var nameTXT = "Data" + filename + ".txt";					//name of txt file
 		var nameImage = "Image" + filename + ".jpg";				//name of image file
-		var nameDir = $rootScope.curDir + "img" + filename + "/";	//directory path of files
+		var nameDir = globalData.curDir + "img" + filename + "/";	//directory path of files
 		
-		$cordovaFile.readAsText($rootScope.curDir, "dir.txt")
+		$cordovaFile.readAsText(globalData.curDir, "dir.txt")
 		.then(function (success) {
 			dirList += success;
 		}, function (error) {
-			self.writeTXT($rootScope.curDir, "dir.txt", "");
+			self.writeTXT(globalData.curDir, "dir.txt", "");
 		}).then(function () {
-			if ($rootScope.modifyName == null) {				//if creating a new image
+			if (globalData.modifyName == null) {				//if creating a new image
 				$cordovaFile.createDir(								//create nameDir location
-					$rootScope.curDir, 
+					globalData.curDir, 
 					"img" + filename, 
 					false
 				).then(function () {
 					$cordovaFile.moveFile(								//move image to nameDir location
-						$rootScope.sourceDirectory, 
-						$rootScope.sourceFileName, 
+						globalData.sourceDirectory, 
+						globalData.sourceFileName, 
 						nameDir,
 						nameImage
 					);
@@ -80,39 +73,39 @@ app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$
 				}).then(function() {
 					dirList += "img" + filename + "/";
 				}).then(function () {
-					$cordovaFile.removeFile($rootScope.curDir, "dir.txt");
+					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
 				}).then(function () {
-					self.writeTXT($rootScope.curDir, "dir.txt", dirList);
+					self.writeTXT(globalData.curDir, "dir.txt", dirList);
 				});
 			}
 			
-			else if ($rootScope.modifyName === filename) {		//if image being edited has the same name as before 
+			else if (globalData.modifyName === filename) {		//if image being edited has the same name as before 
 				
 				$cordovaFile.removeFile(nameDir, nameTXT)
 				.then(function () {
 					self.writeTXT(nameDir, nameTXT, dataContent);
 				}).then(function () {
-					$cordovaFile.removeFile($rootScope.curDir, "dir.txt");
+					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
 				}).then(function () {
-					self.writeTXT($rootScope.curDir, "dir.txt", dirList);
+					self.writeTXT(globalData.curDir, "dir.txt", dirList);
 				});
 			}
 					
 			else {												//if image being edited is changing name
 				
-				dirList.splice(dirList.indexOf("img" + $rootScope.modifyName + "/"), 1);
+				dirList.splice(dirList.indexOf("img" + globalData.modifyName + "/"), 1);
 				dirList += "img" + filename + "/";
 				
-				var oldNameDir = $rootScope.curDir + "img" + $rootScope.modifyName + "/";
-				var oldnameTXT = "Data" + $rootScope.modifyName + ".txt";
-				var oldNameImage = "Image" + $rootScope.modifyName + ".jpg";
+				var oldNameDir = globalData.curDir + "img" + globalData.modifyName + "/";
+				var oldnameTXT = "Data" + globalData.modifyName + ".txt";
+				var oldNameImage = "Image" + globalData.modifyName + ".jpg";
 				
 				$cordovaFile.removeFile(							//destroy old txt packet in old folder
 					oldNameDir, 
 					oldnameTXT
 				).then(function () {
 					$cordovaFile.createDir(								//create nameDir location
-						$rootScope.curDir, 
+						globalData.curDir, 
 						"img" + filename, false
 					);
 				}).then(function () {
@@ -126,13 +119,13 @@ app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$
 					self.writeTXT(nameDir, nameTXT, dataContent);				//write new txt packet
 				}).then(function () {
 					$cordovaFile.removeDir(								//destroy old folder
-						$rootScope.curDir,
-						"img" + $rootScope.modifyName
+						globalData.curDir,
+						"img" + globalData.modifyName
 					);
 				}).then(function () {
-					$cordovaFile.removeFile($rootScope.curDir, "dir.txt");
+					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
 				}).then(function () {
-					self.writeTXT($rootScope.curDir, "dir.txt", dirList);
+					self.writeTXT(globalData.curDir, "dir.txt", dirList);
 				});
 			}
 			
@@ -144,7 +137,7 @@ app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$
 	self.startLoop = function(filename) {
 		var stay = true;
 		self.loop = $interval(function() {
-				$cordovaFile.readAsText($rootScope.curDir, "dir.txt")
+				$cordovaFile.readAsText(globalData.curDir, "dir.txt")
 				.then(function (success) {
 					console.log(success);
 					console.log(success.substring(success.length - ("img" + filename + "/").length));
@@ -168,13 +161,13 @@ app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$
 	
 	self.writeTXT = function(fileDir, fileName, content) {
 		$cordovaFile.writeFile(									//write txt packet of metadata to cache
-				$rootScope.sourceDirectory, 
+				globalData.sourceDirectory, 
 				fileName, 
 				content, 
 				true
 			).then(function () {
 				$cordovaFile.moveFile(								//transfer txt packet from cache to specified location
-					$rootScope.sourceDirectory, 
+					globalData.sourceDirectory, 
 					fileName, 
 					fileDir 
 				);

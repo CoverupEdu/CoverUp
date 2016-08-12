@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('starter', ['ionic', 'ngCordova']);
-app.run(function($ionicPlatform, $rootScope, customFileIO) {
+app.run(function($ionicPlatform, globalData) {
     $ionicPlatform.ready(function() {
-		customFileIO.emitReady();
+		globalData.emitReady();
 		
 		
 		//DO NOT ENTER ANY COMMANDS AFTER THIS POINT
@@ -69,9 +69,5 @@ app.directive('resize', function ($window) {
         });
     }
 })
-
-app.controller('name-here-controller', function($scope, $ionicPopover, $rootScope, $timeout) {
-	
-	});
 
 

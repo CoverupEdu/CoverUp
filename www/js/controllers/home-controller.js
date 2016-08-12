@@ -1,37 +1,49 @@
 // CONTROLLER: home-controller
 // Controls home page.
-// Injects: $scope, $rootScope, Photo, Sets
 
-app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
+app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(Labels, globalData, customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
     
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
     var btn3 = document.getElementById("button3");
     var market = document.getElementById("market-content");
     var sets = document.getElementById("sets-content");
-	$scope.dirList = [];
-	$scope.previewImages = [];
-	$rootScope.modifyName = "";		//name of image being modified (null if new image being created)
-	$rootScope.dirList = [];
-	$rootScope.previewImages = [];
-	$rootScope.saving = false;
+	globalData.modifyName = "";		//name of image being modified (null if new image being created)
+	globalData.dirList = [];
+	globalData.previewImages = [];
+	$scope.previewImages = globalData.previewImages;
 	
-	$rootScope.$on('appIsReady', function() {
-		$rootScope.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+	$scope.$watch(function() { 
+		return globalData.previewImages
+		}, function(newValue, oldValue) {
+			$scope.previewImages = newValue;
+			console.log($scope.previewImages);
+		}
+	);
+	
+	$rootScope.$on('appIsReady', function() {		//
+		globalData.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
 		customFileIO.loadDirList();
 	});
 	
+	//~~~~~~~~~~~~~~~~~~~~
+    //Set button interaction
+    //~~~~~~~~~~~~~~~~~~~~
+	
+	$scope.editButton = function() {
+		console.log("edit");
+	}
 	
 	//~~~~~~~~~~~~~~~~~~~~
-    //Home page set selection control (not currently in use)
+    //Home page folder selection control (not currently in use)
     //~~~~~~~~~~~~~~~~~~~~
 	
 	$scope.newFolder = function() {
 		//popup asking for name
 		var newFolderName // = whatever is entered
-		$cordovaFile.checkDir($rootScope.curDir, "dir" + newFolderName)
+		$cordovaFile.checkDir(globalData.curDir, "dir" + newFolderName)
 			.then(function (success) {
-				$cordovaFile.createDir($rootScope.curDir, "dir" + newFolderName, false)
+				$cordovaFile.createDir(globalData.curDir, "dir" + newFolderName, false)
 				//update dir list
 			}, function (error) {
 				//error; dir already exists
@@ -43,13 +55,13 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
 			
 		}
 		else if (identifier.substring(0,3) == "dir") {
-			$rootScope.curDir += identifier + "/";
+			globalData.curDir += identifier + "/";
 		}
 	}
 	
 	$scope.upFolder = function() {
-		$rootScope.curDir = $rootScope.curDir.substring(0, $rootScope.curDir.length - 1);
-		$rootScope.curDir = $rootScope.curDir.substring(0, $rootScope.curDir.lastIndexOf('/') + 1);
+		globalData.curDir = globalData.curDir.substring(0, globalData.curDir.length - 1);
+		globalData.curDir = globalData.curDir.substring(0, globalData.curDir.lastIndexOf('/') + 1);
 	}
 	
     //~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +69,7 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
     //~~~~~~~~~~~~~~~~~~~~
 
     $scope.takePhoto = function() {
-		$rootScope.modifyName = null;
+		globalData.modifyName = null;
         var options = {
 			destinationType: navigator.camera.DestinationType.FILE_URI,
 			quality: 60,
@@ -66,17 +78,19 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			$rootScope.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
-			$rootScope.targetDirectory = $rootScope.sourceDirectory.substring(0, $rootScope.sourceDirectory.length - 6) + "files/";
-			$rootScope.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
+			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
+			globalData.targetDirectory = globalData.sourceDirectory.substring(0, globalData.sourceDirectory.length - 6) + "files/";
+			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
             Photo.setImage(sourcePath);
             $scope.photo = Photo.image;
+			Labels.labels = [];
+			$state.transitionTo('modify');
         }, function(err) {
 			$state.transitionTo('index');
 		});
     };
     $scope.takePhotoFromGallery = function() {
-		$rootScope.modifyName = null;
+		globalData.modifyName = null;
         var options = {
 			destinationType: navigator.camera.DestinationType.FILE_URI,
 			quality: 75,
@@ -85,20 +99,23 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			$rootScope.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
-			$rootScope.targetDirectory = $rootScope.sourceDirectory.substring(0, $rootScope.sourceDirectory.length - 6) + "files/";
-			$rootScope.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
+			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
+			globalData.targetDirectory = globalData.sourceDirectory.substring(0, globalData.sourceDirectory.length - 6) + "files/";
+			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
             Photo.setImage(sourcePath);
             $scope.photo = Photo.image;
+			Labels.labels = [];
+			$state.transitionTo('modify');
         }, function(err) {
 			$state.transitionTo('index');
 		});
     }
     
     $scope.setToDefaultPhoto = function() {
-		$rootScope.modifyName = null;
+		globalData.modifyName = null;
         Photo.setImage("img/default.jpg");
-        $state.go('modify');
+        Labels.labels = [];
+		$state.transitionTo('modify');
     }
     
     //~~~~~~~~~~~~~~~~~~~~

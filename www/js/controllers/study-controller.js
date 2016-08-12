@@ -1,12 +1,11 @@
 // CONTROLLER: study-controller
 // Controls the study page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
-app.controller('study-controller', ['$rootScope', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', function($rootScope, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels) {
+app.controller('study-controller', ['globalData', '$rootScope', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', function(globalData, $rootScope, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels) {
     $scope.labels = Labels.labels;
 	$scope.curIndex = 0;
 	$scope.nullString = "";
-	$rootScope.labelEdit = false;
-	$rootScope.curLabel;
+	globalData.curLabel;
 	$scope.labelStyle = [];
 	$scope.openAll = false;
 
