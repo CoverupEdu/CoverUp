@@ -3,7 +3,6 @@
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
 app.controller('study-controller', ['$rootScope', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', function($rootScope, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels) {
     $scope.labels = Labels.labels;
-    $scope.photoService = Photo;
 	$scope.curIndex = 0;
 	$scope.nullString = "";
 	$rootScope.labelEdit = false;

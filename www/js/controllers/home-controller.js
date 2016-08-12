@@ -2,18 +2,38 @@
 // Controls home page.
 // Injects: $scope, $rootScope, Photo, Sets
 
-app.controller('home-controller', ['$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function($ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
+app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
     
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
     var btn3 = document.getElementById("button3");
     var market = document.getElementById("market-content");
     var sets = document.getElementById("sets-content");
-    $scope.setService = Sets;
+	$scope.dirList = [];
+	$scope.previewImages = [];
 	$rootScope.modifyName = "";		//name of image being modified (null if new image being created)
+	$rootScope.dirList = [];
+	$rootScope.previewImages = [];
+	$rootScope.saving = false;
+	
+	$rootScope.$on('appIsReady', function() {
+		$rootScope.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+		$scope.callLoadDirList();
+	});
+	
+	$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+		if(toState.url = "/home" && fromState != "/home") {
+			$scope.callLoadDirList();
+		}
+	});
+	
+	$scope.callLoadDirList = function() {
+		customFileIO.loadDirList();
+	}
+	
 	
 	//~~~~~~~~~~~~~~~~~~~~
-    //Home page set selection control
+    //Home page set selection control (not currently in use)
     //~~~~~~~~~~~~~~~~~~~~
 	
 	$scope.newFolder = function() {
@@ -121,13 +141,6 @@ app.controller('home-controller', ['$ionicPlatform', '$timeout', '$cordovaFile',
             $(this).removeClass("toggle-home-btn");
         }
     );
-    
-    $rootScope.initSetList = function() {
-        $rootScope.stuff = ""
-        for(i = 0; i < Sets.image.length; i++) {
-            $rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + Sets.image[i] + "'><a>Edit</a><a>Learn</a><a>Test</a></div>" );
-        }
-    }
     
     enableSets(); //Set tab is open by default
     

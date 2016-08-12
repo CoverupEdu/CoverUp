@@ -2,7 +2,7 @@
 Controls the modify page.
 Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
 Comments refer to content above */
-app.controller('modify-controller', ['customFileIO', '$cordovaFile', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function(customFileIO, $cordovaFile, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
+app.controller('modify-controller', ['$state', 'customFileIO', '$cordovaFile', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($state, customFileIO, $cordovaFile, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.labels = Labels.labels;		//mirror general labels to local copy
     $scope.photoService = Photo;		
 	$rootScope.canEditLabel = false;	//var for whether label can be edited
@@ -114,8 +114,5 @@ app.controller('modify-controller', ['customFileIO', '$cordovaFile', '$anchorScr
 	
 	$scope.callSave = function() {
 		customFileIO.saveSet(JSON.stringify(Labels.labels));
-		Sets.image.push(Photo.image);
-		$rootScope.initSetList();
 	}
-	
 }])

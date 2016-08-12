@@ -1,7 +1,52 @@
 // SERVICE: customFileIO
 // Contains functions for file input/output.
-app.service('customFileIO', ['$rootScope', '$cordovaFile', function($rootScope, $cordovaFile) {
+app.service('customFileIO', ['$state', '$timeout', '$rootScope', '$cordovaFile', function($state, $timeout, $rootScope, $cordovaFile) {
     var self = this;
+	
+	this.emitReady = function() {		//not strictly related to file io but just here for convenience
+		$rootScope.$emit('appIsReady');
+	}
+	
+	this.loadDirList = function() {
+		$rootScope.dirList = [];
+		$rootScope.previewImages = [];
+		var quantity = 0;
+		$cordovaFile.readAsText($rootScope.curDir, "dir.txt")
+		.then(function (success) {
+			var mainString = success;
+			quantity = mainString.split('/').length - 1;
+			for (var i = 1; i < quantity; i++) {
+				console.log("ayy");
+				$rootScope.dirList.push(mainString.substring(0, mainString.indexOf('/') + 1));
+				mainString = mainString.substring(mainString.indexOf('/') + 1);
+			}
+			$rootScope.dirList.push(mainString);
+		}, function(error) {
+			console.log(error);
+		}).then(function() {
+			console.log(quantity);
+			console.log($rootScope.dirList);
+			var prefix;
+			$rootScope.stuff = ""
+			for (var i = 0; i < $rootScope.dirList.length; i++) {
+				prefix = $rootScope.dirList[i].substring(0,3);
+				if(prefix == "img") {
+					$rootScope.previewImages[i] = 
+						$rootScope.curDir + 
+						$rootScope.dirList[i] + 
+						"Image" + 
+						$rootScope.dirList[i].substring(3).split('/')[0] +
+						".jpg";
+					$rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + $rootScope.previewImages[i] + "'><a>Edit</a><a>Learn</a><a>Test</a></div>" );
+				}
+				else if(prefix == "dir") {
+					$rootScope.previewImages[i] = "img/folder.jpg";
+					$rootScope.stuff +=( " <div class = 'setPhoto'><img src = '" + $rootScope.previewImages[i] + "'><a>Options</a><a>Open</a><a>Delete</a></div>" );
+				}
+				else {console.log(prefix)};
+			}
+		});
+	}
 	
 	this.saveSet = function(dataContent) {
 		
@@ -90,8 +135,14 @@ app.service('customFileIO', ['$rootScope', '$cordovaFile', function($rootScope, 
 				});
 			}
 			
+		}).then(function() {
+			$timeout(function() {
+				$state.transitionTo('index');
+			}, 500);			
+			/* For some reason, file saving doesn't complete before dirList 
+			is loaded. Arbitrary time pause is a workaround but highly unpreferable 
+			as it may not be long enough for slower machines. Needs dynamic method. */
 		});
-
 	};
 	
 	self.writeTXT = function(fileDir, fileName, content) {
