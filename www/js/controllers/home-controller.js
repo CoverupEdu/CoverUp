@@ -18,18 +18,8 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
 	
 	$rootScope.$on('appIsReady', function() {
 		$rootScope.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
-		$scope.callLoadDirList();
-	});
-	
-	$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-		if(toState.url = "/home" && fromState != "/home") {
-			$scope.callLoadDirList();
-		}
-	});
-	
-	$scope.callLoadDirList = function() {
 		customFileIO.loadDirList();
-	}
+	});
 	
 	
 	//~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +71,9 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
 			$rootScope.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
             Photo.setImage(sourcePath);
             $scope.photo = Photo.image;
-        }, null);
+        }, function(err) {
+			$state.transitionTo('index');
+		});
     };
     $scope.takePhotoFromGallery = function() {
 		$rootScope.modifyName = null;
@@ -98,7 +90,9 @@ app.controller('home-controller', ['customFileIO', '$ionicPlatform', '$timeout',
 			$rootScope.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
             Photo.setImage(sourcePath);
             $scope.photo = Photo.image;
-        }, null);
+        }, function(err) {
+			$state.transitionTo('index');
+		});
     }
     
     $scope.setToDefaultPhoto = function() {

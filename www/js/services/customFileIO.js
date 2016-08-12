@@ -1,13 +1,14 @@
 // SERVICE: customFileIO
 // Contains functions for file input/output.
-app.service('customFileIO', ['$state', '$timeout', '$rootScope', '$cordovaFile', function($state, $timeout, $rootScope, $cordovaFile) {
+app.service('customFileIO', ['$interval', '$state', '$timeout', '$rootScope', '$cordovaFile', function($interval, $state, $timeout, $rootScope, $cordovaFile) {
     var self = this;
+	self.loop;
 	
 	this.emitReady = function() {		//not strictly related to file io but just here for convenience
 		$rootScope.$emit('appIsReady');
 	}
 	
-	this.loadDirList = function() {
+	self.loadDirList = function() {
 		$rootScope.dirList = [];
 		$rootScope.previewImages = [];
 		var quantity = 0;
@@ -58,7 +59,7 @@ app.service('customFileIO', ['$state', '$timeout', '$rootScope', '$cordovaFile',
 		
 		$cordovaFile.readAsText($rootScope.curDir, "dir.txt")
 		.then(function (success) {
-				dirList += success;
+			dirList += success;
 		}, function (error) {
 			self.writeTXT($rootScope.curDir, "dir.txt", "");
 		}).then(function () {
@@ -136,14 +137,34 @@ app.service('customFileIO', ['$state', '$timeout', '$rootScope', '$cordovaFile',
 			}
 			
 		}).then(function() {
-			$timeout(function() {
-				$state.transitionTo('index');
-			}, 500);			
-			/* For some reason, file saving doesn't complete before dirList 
-			is loaded. Arbitrary time pause is a workaround but highly unpreferable 
-			as it may not be long enough for slower machines. Needs dynamic method. */
+			self.startLoop(filename);
 		});
 	};
+	
+	self.startLoop = function(filename) {
+		var stay = true;
+		self.loop = $interval(function() {
+				$cordovaFile.readAsText($rootScope.curDir, "dir.txt")
+				.then(function (success) {
+					console.log(success);
+					console.log(success.substring(success.length - ("img" + filename + "/").length));
+					if(success.substring(success.length - ("img" + filename + "/").length) == "img" + filename + "/" && stay == true) {
+						$rootScope.$emit('breakInterval');
+						stay = false;	
+					}
+					else if(stay == false) {console.log("bullet dodge");}
+				}, function (error) {
+					console.log(error);
+				});
+			}, 100);
+	}
+	
+	$rootScope.$on('breakInterval', function() {
+		console.log("load");
+		$timeout(function() {self.loadDirList(); })
+		.then(function() { $state.transitionTo('index'); })
+		.then(function() { $interval.cancel(self.loop); });	
+	});
 	
 	self.writeTXT = function(fileDir, fileName, content) {
 		$cordovaFile.writeFile(									//write txt packet of metadata to cache
