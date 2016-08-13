@@ -109,7 +109,7 @@ app.controller('home-controller', ['$state', '$scope', '$rootScope', 'Photo', 'L
     $scope.test_click = function(event, index) {
         Photo.setImage(Sets.image[index]);
         Labels.labels = Sets.set_labels[index];
-        $state.go('loctest');
+        $state.go('test');
     }
     
 }]);
