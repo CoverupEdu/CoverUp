@@ -8,12 +8,13 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     var btn3 = document.getElementById("button3");
     var market = document.getElementById("market-content");
     var sets = document.getElementById("sets-content");
-	globalData.modifyName = "";		//name of image being modified (null if new image being created)
+	globalData.modifyName = "";		
 	globalData.dirList = [];
 	globalData.previewImages = [];
+	$scope.customFileIOService = customFileIO;
 	$scope.previewImages = globalData.previewImages;
 	
-	$scope.$watch(function() { 
+	$scope.$watch(function() { 						
 		return globalData.previewImages
 		}, function(newValue, oldValue) {
 			$scope.previewImages = newValue;
@@ -27,26 +28,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	});
 	
 	//~~~~~~~~~~~~~~~~~~~~
-    //Set button interaction
-    //~~~~~~~~~~~~~~~~~~~~
-	
-	$scope.setEdit = function(index, nextState) {
-		globalData.modifyName = globalData.dirList[index].substring(3).split('/')[0];
-		Photo.setImage(globalData.previewImages[index]);
-		var dataPath = 
-			globalData.curDir + 
-			globalData.dirList[index] + 
-			"Data" + 
-			globalData.dirList[index].substring(3).split('/')[0] +
-			".txt";  
-		customFileIO.loadData(globalData.modifyName)
-		.then(function() {
-			$state.transitionTo(nextState);
-		});
-	}
-	
-	//~~~~~~~~~~~~~~~~~~~~
-    //Home page folder selection control (not currently in use)
+    //Home page folder selection control functions (not currently in use)
     //~~~~~~~~~~~~~~~~~~~~
 	
 	$scope.newFolder = function() {
@@ -61,18 +43,21 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 			});
 	}
     
-	$scope.selectImageOrFolder = function(identifier) {
-		if (identifier.substring(0, 3) == "img") {
+	$scope.selectImageOrFolder = function(index) {
+		var ID = globalData.dirList[index];
+		if (ID.substring(0, 3) == "img") {
 			
 		}
-		else if (identifier.substring(0,3) == "dir") {
-			globalData.curDir += identifier + "/";
+		else if (ID.substring(0,3) == "dir") {
+			globalData.curDir += ID;
+			customFileIO.loadDirList();
 		}
 	}
 	
 	$scope.upFolder = function() {
 		globalData.curDir = globalData.curDir.substring(0, globalData.curDir.length - 1);
 		globalData.curDir = globalData.curDir.substring(0, globalData.curDir.lastIndexOf('/') + 1);
+		customFileIO.loadDirList();
 	}
 	
     //~~~~~~~~~~~~~~~~~~~~
@@ -89,18 +74,17 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			console.log(sourcePath);
 			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
-			globalData.targetDirectory = globalData.sourceDirectory.substring(0, globalData.sourceDirectory.length - 6) + "files/";
-			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
-            Photo.setImage(sourcePath);
+			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
+			Photo.setImage(sourcePath);
 			Labels.labels = [];
 			$state.transitionTo('modify');
         }, function(err) {
 			$state.transitionTo('index');
 		});
     };
-    $scope.takePhotoFromGallery = function() {
+    
+	$scope.takePhotoFromGallery = function() {
 		globalData.modifyName = null;
 		globalData.moveOrCopy = false;
         var options = {
@@ -111,11 +95,8 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			console.log(sourcePath);
 			globalData.sourceDirectory = "file://" + sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1); //possibly contentious for ios
-			console.log(globalData.sourceDirectory);
-			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
-            console.log(globalData.sourceFileName);
+			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
 			Photo.setImage(sourcePath);
 			Labels.labels = [];
 			$state.transitionTo('modify');

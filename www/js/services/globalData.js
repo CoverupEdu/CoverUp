@@ -15,7 +15,6 @@ app.service('globalData', ['$rootScope', function($rootScope) {
 	this.modifyName;
 	this.sourceDirectory;
 	this.sourceFileName;
-	this.targetDirectory;
 	this.moveOrCopy;
 	
 }])

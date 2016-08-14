@@ -1,8 +1,17 @@
 // SERVICE: customFileIO
 // Contains functions for file input/output.
-app.service('customFileIO', ['$q', 'Labels', 'globalData', '$interval', '$state', '$timeout', '$rootScope', '$cordovaFile', function($q, Labels, globalData, $interval, $state, $timeout, $rootScope, $cordovaFile) {
+app.service('customFileIO', ['Photo', '$q', 'Labels', 'globalData', '$interval', '$state', '$timeout', '$rootScope', '$cordovaFile', function(Photo, $q, Labels, globalData, $interval, $state, $timeout, $rootScope, $cordovaFile) {
     var self = this;
 	self.loop;
+	
+	self.changePage = function(index, nextState) {
+		globalData.modifyName = globalData.dirList[index].substring(3).split('/')[0];
+		Photo.setImage(globalData.previewImages[index]);
+		self.loadData(globalData.modifyName)
+		.then(function() {
+			$state.transitionTo(nextState);
+		});
+	}
 	
 	self.loadDirList = function() {
 		return $q(function(resolve, reject) {
@@ -79,7 +88,6 @@ app.service('customFileIO', ['$q', 'Labels', 'globalData', '$interval', '$state'
 					"img" + filename, 
 					false
 				).then(function () {
-					console.log("createdir");
 					if(globalData.moveOrCopy) {
 						$cordovaFile.moveFile(								//move image to nameDir location
 							globalData.sourceDirectory, 
@@ -90,7 +98,6 @@ app.service('customFileIO', ['$q', 'Labels', 'globalData', '$interval', '$state'
 						, function(error) {console.log(error);});
 					}
 					else {
-						console.log("special");
 						globalData.moveOrCopy = true;
 						$cordovaFile.copyFile(								//move image to nameDir location
 							globalData.sourceDirectory, 
@@ -101,16 +108,12 @@ app.service('customFileIO', ['$q', 'Labels', 'globalData', '$interval', '$state'
 						, function(error) {console.log(error);});
 					}
 				}).then(function() {
-					console.log("writedata");
 					self.writeTXT(nameDir, nameTXT, dataContent);
 				}).then(function() {
-					console.log("createdirlist");
 					dirList += "img" + filename + "/";
 				}).then(function () {
-					console.log("deleteoldtxtfile");
 					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
 				}).then(function () {
-					console.log("createnewdirtxtfile");
 					return self.writeTXT(globalData.curDir, "dir.txt", dirList);
 				}).then(function() {
 					console.log("finish");
@@ -131,8 +134,7 @@ app.service('customFileIO', ['$q', 'Labels', 'globalData', '$interval', '$state'
 					resolve("finish");
 				});
 			}
-					
-					
+								
 			else {												//if image being edited is changing name
 				
 				var pos = dirList.indexOf("img" + globalData.modifyName + "/");

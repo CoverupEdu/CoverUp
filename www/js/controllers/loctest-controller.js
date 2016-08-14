@@ -1,6 +1,6 @@
 // CONTROLLER: loctest-controller
 // Controls the loctest page.
-app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function(globalData, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
+app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function(globalData, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
     $scope.labelsService = Labels;
 	$scope.photoService = Photo;
 	$scope.testIndex = [];

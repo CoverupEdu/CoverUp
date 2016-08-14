@@ -37,12 +37,12 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
     */
 	
 	$scope.setStyleAll = function() {
-		for (i = 0; i < Labels.length; i++) {
+		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
 	}
 	
-	//Set coordinates for each label	when called.
+	//Set coordinates for each label when called.
 	
 	$scope.setStyle = function(val) {
 		$scope.labelStyle[val] = {
