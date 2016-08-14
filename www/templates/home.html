@@ -7,9 +7,8 @@
             <div ng-repeat="image in previewImages" class = 'setPhoto'>
 				<!-- set title?-->
 				<img ng-src = "{{previewImages[$index]}}">
-				<a ng-click="editButton($index)">Edit</a><a ng-click="learnButton($index)">Learn</a><a ng-click="testButton($index)">Test</a>
+				<a ng-click="setEdit($index, 'modify')">Edit</a><a ng-click="setEdit($index, 'study')">Learn</a><a ng-click="setEdit($index, 'loctest')">Test</a>
 			</div>
-			<p ng-repeat="image in previewImages">text</p>
        </div> 
     </ion-content>
     

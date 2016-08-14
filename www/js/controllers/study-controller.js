@@ -2,7 +2,8 @@
 // Controls the study page.
 // Injects: $scope, $rootScope, $ionicPopover, Photo, Labels
 app.controller('study-controller', ['globalData', '$rootScope', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', function(globalData, $rootScope, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels) {
-    $scope.labels = Labels.labels;
+    $scope.labelsService = Labels;
+	$scope.photoService = Photo;
 	$scope.curIndex = 0;
 	$scope.nullString = "";
 	globalData.curLabel;
@@ -10,15 +11,15 @@ app.controller('study-controller', ['globalData', '$rootScope', '$ionicScrollDel
 	$scope.openAll = false;
 
 	$scope.setStyleAll = function() {
-		for (i = 0; i < $scope.labels.length; i++) {
+		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
 	}
 	
 	$scope.setStyle = function(val) {
 		$scope.labelStyle[val] = {
-			left: ($scope.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
-			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
+			left: (Labels.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
+			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
 		};
 	}
 	

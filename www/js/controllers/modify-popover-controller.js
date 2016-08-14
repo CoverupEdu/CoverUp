@@ -1,6 +1,7 @@
-app.controller('modify-popover-controller', ['globalData', '$scope', '$ionicPopover', '$rootScope', '$timeout', function(globalData, $scope, $ionicPopover, $rootScope, $timeout) {
+app.controller('modify-popover-controller', ['Labels', 'globalData', '$scope', '$ionicPopover', '$rootScope', '$timeout', function(Labels, globalData, $scope, $ionicPopover, $rootScope, $timeout) {
 	$scope.insLabel;	//currently entered label while in edit mode.
-
+	$scope.labelsService = Labels;
+	
 	$scope.$watch(function() { 
 		return globalData.canEditLabel;
 		}, function(newValue, oldValue) {
@@ -46,9 +47,9 @@ app.controller('modify-popover-controller', ['globalData', '$scope', '$ionicPopo
 	$rootScope.editButton = function() {
 		globalData.curLabel = $scope.insLabel;
 		if (!globalData.canEditLabel) {
-			$scope.insLabel = $scope.labels[$scope.curIndex].label;
+			$scope.insLabel = Labels.labels[$scope.curIndex].label;
 		}
-		else {$scope.labels[$scope.curIndex].label = globalData.curLabel;}
+		else {Labels.labels[$scope.curIndex].label = globalData.curLabel;}
 		globalData.canEditLabel = !globalData.canEditLabel;
 		$rootScope.textFocus();
 	};

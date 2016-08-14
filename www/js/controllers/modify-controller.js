@@ -115,6 +115,13 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.callSave = function() {
-		customFileIO.saveSet(JSON.stringify(Labels.labels));
+		customFileIO.saveSet(JSON.stringify(Labels.labels))
+		.then(function() {
+			console.log("loaddirs");
+			customFileIO.loadDirList();
+		}).then(function() {
+			console.log("transition");
+			$state.transitionTo('index');
+		});
 	}
 }])

@@ -22,7 +22,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	);
 	
 	$rootScope.$on('appIsReady', function() {		//
-		globalData.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+		globalData.curDir = cordova.file.dataDirectory; //debug dir: "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
 		customFileIO.loadDirList();
 	});
 	
@@ -30,8 +30,19 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     //Set button interaction
     //~~~~~~~~~~~~~~~~~~~~
 	
-	$scope.editButton = function() {
-		console.log("edit");
+	$scope.setEdit = function(index, nextState) {
+		globalData.modifyName = globalData.dirList[index].substring(3).split('/')[0];
+		Photo.setImage(globalData.previewImages[index]);
+		var dataPath = 
+			globalData.curDir + 
+			globalData.dirList[index] + 
+			"Data" + 
+			globalData.dirList[index].substring(3).split('/')[0] +
+			".txt";  
+		customFileIO.loadData(globalData.modifyName)
+		.then(function() {
+			$state.transitionTo(nextState);
+		});
 	}
 	
 	//~~~~~~~~~~~~~~~~~~~~
@@ -78,11 +89,11 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
+			console.log(sourcePath);
 			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
 			globalData.targetDirectory = globalData.sourceDirectory.substring(0, globalData.sourceDirectory.length - 6) + "files/";
 			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
             Photo.setImage(sourcePath);
-            $scope.photo = Photo.image;
 			Labels.labels = [];
 			$state.transitionTo('modify');
         }, function(err) {
@@ -91,19 +102,21 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     };
     $scope.takePhotoFromGallery = function() {
 		globalData.modifyName = null;
+		globalData.moveOrCopy = false;
         var options = {
 			destinationType: navigator.camera.DestinationType.FILE_URI,
-			quality: 75,
+			quality: 60,
 			correctOrientation: true,
 			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY 
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
-			globalData.targetDirectory = globalData.sourceDirectory.substring(0, globalData.sourceDirectory.length - 6) + "files/";
+			console.log(sourcePath);
+			globalData.sourceDirectory = "file://" + sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1); //possibly contentious for ios
+			console.log(globalData.sourceDirectory);
 			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
-            Photo.setImage(sourcePath);
-            $scope.photo = Photo.image;
+            console.log(globalData.sourceFileName);
+			Photo.setImage(sourcePath);
 			Labels.labels = [];
 			$state.transitionTo('modify');
         }, function(err) {

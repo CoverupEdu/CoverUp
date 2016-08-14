@@ -1,7 +1,8 @@
 // CONTROLLER: loctest-controller
 // Controls the loctest page.
 app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function(globalData, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
-    $scope.labels = Labels.labels;
+    $scope.labelsService = Labels;
+	$scope.photoService = Photo;
 	$scope.testIndex = [];
 	$scope.curIndex1 = 0;
 	$scope.curIndex2 = 0;
@@ -19,7 +20,7 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	var toggle_answer_btn = document.getElementById("loctestShowAnswerButton");	//define variable as HTML DOM element for Show Answer button
 
 	$timeout(function() {
-		for (var i = 0; i < $scope.labels.length; i++) {		//create array of indexes of original labels (starts as 0, 1, 2, 3... n)
+		for (var i = 0; i < Labels.labels.length; i++) {		//create array of indexes of original labels (starts as 0, 1, 2, 3... n)
 			$scope.testIndex.push(i);
 		}
 	}, 0)
@@ -55,8 +56,8 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 			if (user)										//if the user clicked (not applied if show answer clicked because assumed that answer is correct)
 			{
 				if (!button) {
-					var x = Math.pow((event.offsetX - ($scope.labels[$scope.curIndex2].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width)), 2) +
-							Math.pow((event.offsetY - ($scope.labels[$scope.curIndex2].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height)), 2);
+					var x = Math.pow((event.offsetX - (Labels.labels[$scope.curIndex2].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width)), 2) +
+							Math.pow((event.offsetY - (Labels.labels[$scope.curIndex2].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height)), 2);
 					if (x <= 6400) {						//pythagorean implementation of whether clicked point lies within 80 pixels of correct label position (80 squared = 6400)
 						$scope.answerResult = true;
 					} 
@@ -104,15 +105,15 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	})
 	
 	$scope.setStyleAll = function() {
-		for (i = 0; i < $scope.labels.length; i++) {
+		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
 	}
 	
 	$scope.setStyle = function(val) {
 		$scope.labelStyle[val] = {
-			left: ($scope.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
-			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
+			left: (Labels.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
+			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
 		};
 	}
 	

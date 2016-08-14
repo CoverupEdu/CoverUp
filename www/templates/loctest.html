@@ -8,7 +8,7 @@
 			<img id="imagecont2" ng-click="clickManage($event, 0, false, true)" class="image" ng-src="{{photoService.image}}">
 			
 			<div ng-if="!showResult && showButtons">
-			<div ng-repeat="label in labels"
+			<div ng-repeat="label in labelsService.labels"
 			style="margin-top:-23px !important; margin-left:-20px !important" 
 			class="button energized button-icon icon ion-ios-circle-filled label"   
 			id="locbutton{{$index}}"
@@ -34,7 +34,7 @@
 </div>
 <div class="bar bar-footer bar-coverupOrange" style="height: 80px !important; font-size: 20px;">
         <p class="loctest_para">Tap the<br>location of:</p>
-        <p id="label_name">{{labels[curIndex2].label}}</p>
+        <p id="label_name">{{labelsService.labels[curIndex2].label}}</p>
         <button id="loctestShowAnswerButton" ><span ng-bind="showAnsText"></span></button>
 </div>
 </ion-view>
