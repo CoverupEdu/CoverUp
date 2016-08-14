@@ -7,6 +7,8 @@
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
             <div id="setContainer"></div>
                 <div ng-repeat="x in setService.set_labels" class="setPhoto"><!--
+                    --><p class="header">Test Title</p><!--
+                    --><p class="sub-header">Test Subject</p><!--
                     --><img ng-src="{{setService.image[$index]}}"><!--
                     --><a ng-click="edit_click($event, $index)">Edit</a><!--
                     --><a ng-click="learn_click($event, $index)">Learn</a><!--
