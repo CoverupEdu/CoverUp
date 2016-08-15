@@ -3,8 +3,7 @@
 app.service('globalData', ['$rootScope', function($rootScope) {
 	
 	this.emitReady = function() {		//not strictly related to file io but just here for convenience
-		this.curDir = cordova.file.dataDirectory; //debug dir: "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
-		customFileIO.loadDirList();
+		$rootScope.$emit('appIsReady');
 	}
 	
 	this.canEditLabel;

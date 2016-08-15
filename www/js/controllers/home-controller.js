@@ -22,6 +22,11 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 		}
 	);
 	
+	$rootScope.$on('appIsReady', function() {		//
+		globalData.curDir = cordova.file.dataDirectory; //debug dir: "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+		customFileIO.loadDirList();
+	});
+	
 	//~~~~~~~~~~~~~~~~~~~~
     //Home page folder selection control functions (not currently in use)
     //~~~~~~~~~~~~~~~~~~~~
