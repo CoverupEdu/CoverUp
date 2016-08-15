@@ -43,10 +43,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/study.html',
         controller: 'study-controller'
     })
-	.state('loctest', {
-        url: '/loctest',
-        templateUrl: 'templates/loctest.html',
-        controller: 'loctest-controller'
+	.state('test', {
+        url: '/test',
+        templateUrl: 'templates/test.html',
+        controller: 'test-controller'
     })
 
     $urlRouterProvider.otherwise('/home');

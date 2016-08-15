@@ -107,9 +107,9 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 		$state.go('modify');
     }
     
-    //~~~~~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~~~~~~~~~
     //Home page button control / layout control!
-    //~~~~~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~~~~~~~~~
     
     enableMarket = function() {
         btn1.classList.add("toggle-home-btn");

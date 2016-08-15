@@ -5,14 +5,14 @@
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
             <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>
-				<!-- set title?-->
+				<p class="header">{{globalDataService.dirList[$index].substring(3).split('/')[0]}}</p>
+				<p class="header">Test subject</p>
 				<img ng-src = "{{globalDataService.previewImages[$index]}}">
-				<a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><a ng-click="customFileIOService.changePage($index, 'loctest')">Test</a>
+				<a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><a ng-click="customFileIOService.changePage($index, 'test')">Test</a>
 			</div>
        </div> 
     </ion-content>
     
-   
     <div id="home-dropdown">
         <ul>
 		<li id="button3" style="margin-right: calc(20% - 120px);"> <!-- Same as above -->
