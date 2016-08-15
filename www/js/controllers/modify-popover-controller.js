@@ -1,13 +1,7 @@
 app.controller('modify-popover-controller', ['Labels', 'globalData', '$scope', '$ionicPopover', '$rootScope', '$timeout', function(Labels, globalData, $scope, $ionicPopover, $rootScope, $timeout) {
 	$scope.insLabel;	//currently entered label while in edit mode.
 	$scope.labelsService = Labels;
-	
-	$scope.$watch(function() { 
-		return globalData.canEditLabel;
-		}, function(newValue, oldValue) {
-			$scope.canEditLabel = newValue;
-		}
-	);
+	$scope.globalDataService = globalData;
 	
 	$rootScope.textFocus = function(){		//
 		if (globalData.canEditLabel) {

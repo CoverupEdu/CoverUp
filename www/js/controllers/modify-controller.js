@@ -85,7 +85,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 		$rootScope.insReset();
 		$timeout(function() {
 			$scope.popover.show(event);
-		}, 200)
+		}, 400)
 		$rootScope.textFocus();
 		globalData.curLabel = Labels.labels[$scope.curIndex].label;
     }
@@ -101,19 +101,21 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	
 	//select appropriate element of the 'modify' html DOM.
 
+	
+	
 	//~~~~~~~~~~~~~~~~~
 	//Save Feature
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.callSave = function() {
-		globalData.showSets = false;
-		customFileIO.saveSet(Labels.labels)
+		globalData.showSets = false;			//prevent sets from loading/lagging up app
+		customFileIO.saveSet(Labels.labels)		//save labels of current set
 		.then(function() {
-			return customFileIO.loadDirList();
+			return customFileIO.loadDirList();	//load new range of sets to sets page
 		}).then(function() {
-			$state.go('index');
+			$state.go('index');					
 			$timeout(function() {
-				globalData.showSets = true;
+				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
 			}, 400);
 		});
 	}

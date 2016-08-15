@@ -11,8 +11,10 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	globalData.modifyName = "";		
 	globalData.dirList = [];
 	globalData.previewImages = [];
-	$scope.customFileIOService = customFileIO;
-	$scope.globalDataService = globalData;
+	$scope.customFileIOService = customFileIO;	//direct scope injection of service
+	$scope.globalDataService = globalData;		//direct scope injection of service
+	
+	
 	
 	
 	$rootScope.$on('appIsReady', function() {
@@ -22,8 +24,15 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 		}
 	});
 	
+	/*when appIsReady event is emitted by globalData i.e. app is ready, and assuming app isn't on a browser,
+	the current directory variable is assigned the path of the root app data directory, and the sets to be loaded on
+	the sets page are loaded initially. */
+	
+	
+	
+	
 	//~~~~~~~~~~~~~~~~~~~~
-    //Home page folder selection control functions (not currently in use)
+    //Home page folder selection control functions (not currently in use, unfinished)
     //~~~~~~~~~~~~~~~~~~~~
 	
 	$scope.newFolder = function() {
@@ -55,12 +64,16 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 		customFileIO.loadDirList();
 	}
 	
+	
+	
+	
+	
     //~~~~~~~~~~~~~~~~~~~~
     //Home page photo control
     //~~~~~~~~~~~~~~~~~~~~
 
     $scope.takePhoto = function() {
-		globalData.modifyName = null;
+		globalData.modifyName = null;		//since this is not an instance of a pre-existing set being modified
         var options = {
 			destinationType: navigator.camera.DestinationType.FILE_URI,
 			quality: 60,
@@ -72,10 +85,10 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
 			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
 			Photo.setImage(sourcePath);
-			Labels.labels = [];
-			$state.go('modify');
+			Labels.labels = [];			//refresh loaded labels
+			$state.go('modify');		//after taking photo and storing in cache memory, go to modify page
         }, function(err) {
-			$state.go('index');
+			$state.go('index');			//if a photo isn't taken, return to home page
 		});
     };
     
@@ -107,6 +120,9 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 		$state.go('modify');
     }
     
+	
+	
+	
     //~~~~~~~~~~~~~~~~~~~~~
     //Home page button control / layout control!
     //~~~~~~~~~~~~~~~~~~~~~

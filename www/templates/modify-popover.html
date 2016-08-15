@@ -1,7 +1,7 @@
 <ion-popover-view ng-controller="modify-popover-controller" class="label-popover">
     <div class="modPop">
-        <h3 ng-hide="canEditLabel" class="title">{{labelsService.labels[curIndex].label}}</h3>
-	<input id="textEntry" type="text" ng-show="canEditLabel" ng-model="insLabel" focus-me autofocus="autofocus">
+        <h3 ng-hide="globalDataService.canEditLabel" class="title">{{labelsService.labels[curIndex].label}}</h3>
+	<input id="textEntry" type="text" ng-show="globalDataService.canEditLabel" ng-model="insLabel" focus-me autofocus="autofocus">
 	<button     ng-class="editStyle()" 
                 ng-click="editButton()" 
                 ng-style={"margin-right":"30px"}></button>

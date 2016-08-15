@@ -4,7 +4,7 @@
             <h3>Market Stuff!</h3>
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>
+            <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>	<!-- ng-if to prevent ng-repeat from lagging up the app until the home view is loaded -->
 				<p class="header">{{globalDataService.dirList[$index].substring(3).split('/')[0]}}</p>
 				<p class="header">Test subject</p>
 				<img ng-src = "{{globalDataService.previewImages[$index]}}">
