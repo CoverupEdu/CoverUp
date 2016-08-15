@@ -12,19 +12,14 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	globalData.dirList = [];
 	globalData.previewImages = [];
 	$scope.customFileIOService = customFileIO;
-	$scope.previewImages = globalData.previewImages;
+	$scope.globalDataService = globalData;
 	
-	$scope.$watch(function() { 						
-		return globalData.previewImages
-		}, function(newValue, oldValue) {
-			$scope.previewImages = newValue;
-			console.log($scope.previewImages);
+	
+	$rootScope.$on('appIsReady', function() {
+		if(globalData.isDevice) {
+			globalData.curDir = cordova.file.dataDirectory; //debug dir: "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+			customFileIO.loadDirList();
 		}
-	);
-	
-	$rootScope.$on('appIsReady', function() {		//
-		globalData.curDir = cordova.file.dataDirectory; //debug dir: "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
-		customFileIO.loadDirList();
 	});
 	
 	//~~~~~~~~~~~~~~~~~~~~
@@ -33,13 +28,13 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	
 	$scope.newFolder = function() {
 		//popup asking for name
-		var newFolderName // = whatever is entered
+		var newFolderName = globalData.chooseRandomName(); // = whatever is entered
 		$cordovaFile.checkDir(globalData.curDir, "dir" + newFolderName)
 			.then(function (success) {
 				$cordovaFile.createDir(globalData.curDir, "dir" + newFolderName, false)
 				//update dir list
 			}, function (error) {
-				//error; dir already exists
+				console.log("error, dir already exists");
 			});
 	}
     
@@ -78,9 +73,9 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
 			Photo.setImage(sourcePath);
 			Labels.labels = [];
-			$state.transitionTo('modify');
+			$state.go('modify');
         }, function(err) {
-			$state.transitionTo('index');
+			$state.go('index');
 		});
     };
     
@@ -99,9 +94,9 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
 			Photo.setImage(sourcePath);
 			Labels.labels = [];
-			$state.transitionTo('modify');
+			$state.go('modify');
         }, function(err) {
-			$state.transitionTo('index');
+			$state.go('index');
 		});
     }
     
@@ -109,7 +104,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 		globalData.modifyName = null;
         Photo.setImage("img/default.jpg");
         Labels.labels = [];
-		$state.transitionTo('modify');
+		$state.go('modify');
     }
     
     //~~~~~~~~~~~~~~~~~~~~

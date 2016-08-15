@@ -7,50 +7,60 @@ app.service('customFileIO', ['Photo', '$q', 'Labels', 'globalData', '$interval',
 	self.changePage = function(index, nextState) {
 		globalData.modifyName = globalData.dirList[index].substring(3).split('/')[0];
 		Photo.setImage(globalData.previewImages[index]);
-		self.loadData(globalData.modifyName)
-		.then(function() {
-			$state.transitionTo(nextState);
-		});
+		if(globalData.isDevice) {
+			self.loadData(globalData.modifyName)
+			.then(function() {
+				$state.go(nextState);
+			});
+		}
+		else {
+			Labels.labels = globalData.labelArray[index];
+			$state.go(nextState);
+		}
 	}
 	
 	self.loadDirList = function() {
 		return $q(function(resolve, reject) {
-			globalData.dirList = [];
-			globalData.previewImages = [];
-			var quantity = 0;
-			$cordovaFile.readAsText(globalData.curDir, "dir.txt")
-			.then(function (success) {
-				var mainString = success;
-				quantity = mainString.split('/').length - 1;
-				for (var i = 1; i < quantity; i++) {
-					console.log("ayy");
-					globalData.dirList.push(mainString.substring(0, mainString.indexOf('/') + 1));
-					mainString = mainString.substring(mainString.indexOf('/') + 1);
-				}
-				globalData.dirList.push(mainString);
-			}, function(error) {
-				console.log(error);
-			}).then(function() {
-				console.log(quantity);
-				console.log(globalData.dirList);
-				var prefix;
-				for (var i = 0; i < globalData.dirList.length; i++) {
-					prefix = globalData.dirList[i].substring(0,3);
-					if(prefix == "img") {
-						globalData.previewImages[i] = 
-							globalData.curDir + 
-							globalData.dirList[i] + 
-							"Image" + 
-							globalData.dirList[i].substring(3).split('/')[0] +
-							".jpg";
+			if(globalData.isDevice) {
+				globalData.dirList = [];
+				globalData.previewImages = [];
+				var quantity = 0;
+				$cordovaFile.readAsText(globalData.curDir, "dir.txt")
+				.then(function (success) {
+					var mainString = success;
+					quantity = mainString.split('/').length - 1;
+					for (var i = 1; i < quantity; i++) {
+						console.log("ayy");
+						globalData.dirList.push(mainString.substring(0, mainString.indexOf('/') + 1));
+						mainString = mainString.substring(mainString.indexOf('/') + 1);
 					}
-					else if(prefix == "dir") {
-						globalData.previewImages[i] = "img/folder.jpg";
+					globalData.dirList.push(mainString);
+				}, function(error) {
+					console.log(error);
+				}).then(function() {
+					console.log(quantity);
+					console.log(globalData.dirList);
+					var prefix;
+					for (var i = 0; i < globalData.dirList.length; i++) {
+						prefix = globalData.dirList[i].substring(0,3);
+						if(prefix == "img") {
+							globalData.previewImages[i] = 
+								globalData.curDir + 
+								globalData.dirList[i] + 
+								"Image" + 
+								globalData.dirList[i].substring(3).split('/')[0] +
+								".jpg";
+						}
+						else if(prefix == "dir") {
+							globalData.previewImages[i] = "img/folder.jpg";
+						}
+						else {console.log(prefix)};
+						if(i + 1 == globalData.dirList.length) {resolve("finish");}
 					}
-					else {console.log(prefix)};
-					if(i + 1 == globalData.dirList.length) {resolve("finish");}
-				}
-			});
+				});
+			}
+			
+			else {resolve("finish");}
 		});
 	}
 	
@@ -67,117 +77,137 @@ app.service('customFileIO', ['Photo', '$q', 'Labels', 'globalData', '$interval',
 		});
 	}
 	
-	this.saveSet = function(dataContent) {
+	this.saveSet = function(sentData) {
 		return $q(function(resolve, reject) {
-		
-		var dirList = "";
-		var filename = self.chooseRandomName(); 					//name entered while saving goes here
-		var nameTXT = "Data" + filename + ".txt";					//name of txt file
-		var nameImage = "Image" + filename + ".jpg";				//name of image file
-		var nameDir = globalData.curDir + "img" + filename + "/";	//directory path of files
-		
-		$cordovaFile.readAsText(globalData.curDir, "dir.txt")
-		.then(function (success) {
-			dirList += success;
-		}, function (error) {
-			console.log(error);
-		}).then(function () {
-			if (globalData.modifyName == null) {				//if creating a new image
-				$cordovaFile.createDir(								//create nameDir location
-					globalData.curDir, 
-					"img" + filename, 
-					false
-				).then(function () {
-					if(globalData.moveOrCopy) {
-						$cordovaFile.moveFile(								//move image to nameDir location
-							globalData.sourceDirectory, 
-							globalData.sourceFileName, 
-							nameDir,
-							nameImage
-						).then(function(success){console.log(success);}
-						, function(error) {console.log(error);});
-					}
-					else {
-						globalData.moveOrCopy = true;
-						$cordovaFile.copyFile(								//move image to nameDir location
-							globalData.sourceDirectory, 
-							globalData.sourceFileName, 
-							nameDir,
-							nameImage
-						).then(function(success){console.log(success);}
-						, function(error) {console.log(error);});
-					}
-				}).then(function() {
-					self.writeTXT(nameDir, nameTXT, dataContent);
-				}).then(function() {
-					dirList += "img" + filename + "/";
+			
+			var dataContent = JSON.stringify(sentData);
+			var dirList = "";
+			var filename = self.chooseRandomName(); 					//name entered while saving goes here
+			var nameTXT = "Data" + filename + ".txt";					//name of txt file
+			var nameImage = "Image" + filename + ".jpg";				//name of image file
+			var nameDir = globalData.curDir + "img" + filename + "/";	//directory path of files
+			
+			if(globalData.isDevice) {
+			
+				$cordovaFile.readAsText(globalData.curDir, "dir.txt")
+				.then(function (success) {
+					dirList += success;
+				}, function (error) {
+					console.log(error);
 				}).then(function () {
-					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
-				}).then(function () {
-					return self.writeTXT(globalData.curDir, "dir.txt", dirList);
-				}).then(function() {
-					console.log("finish");
-					resolve("finish");
+					if (globalData.modifyName == null) {				//if creating a new image
+						$cordovaFile.createDir(								//create nameDir location
+							globalData.curDir, 
+							"img" + filename, 
+							false
+						).then(function () {
+							if(globalData.moveOrCopy) {
+								$cordovaFile.moveFile(								//move image to nameDir location
+									globalData.sourceDirectory, 
+									globalData.sourceFileName, 
+									nameDir,
+									nameImage
+								).then(function(success){console.log(success);}
+								, function(error) {console.log(error);});
+							}
+							else {
+								globalData.moveOrCopy = true;
+								$cordovaFile.copyFile(								//move image to nameDir location
+									globalData.sourceDirectory, 
+									globalData.sourceFileName, 
+									nameDir,
+									nameImage
+								).then(function(success){console.log(success);}
+								, function(error) {console.log(error);});
+							}
+						}).then(function() {
+							self.writeTXT(nameDir, nameTXT, dataContent);
+						}).then(function() {
+							dirList += "img" + filename + "/";
+						}).then(function () {
+							$cordovaFile.removeFile(globalData.curDir, "dir.txt");
+						}).then(function () {
+							return self.writeTXT(globalData.curDir, "dir.txt", dirList);
+						}).then(function() {
+							console.log("finish");
+							resolve("finish");
+						});
+					}
+					
+					else if (globalData.modifyName === filename) {		//if image being edited has the same name as before 
+						
+						$cordovaFile.removeFile(nameDir, nameTXT)
+						.then(function () {
+							self.writeTXT(nameDir, nameTXT, dataContent);
+						}).then(function() {
+							$cordovaFile.removeFile(globalData.curDir, "dir.txt");
+						}).then(function () {
+							return self.writeTXT(globalData.curDir, "dir.txt", dirList);
+						}).then(function() {
+							resolve("finish");
+						});
+					}
+										
+					else {												//if image being edited is changing name
+						
+						var pos = dirList.indexOf("img" + globalData.modifyName + "/");
+						var temp1 = dirList.substring(0, pos);
+						var temp2 = dirList.substring(pos + ("img" + globalData.modifyName + "/").length);
+						
+						dirList = temp1 + "img" + filename + "/" + temp2;
+						
+						var oldNameDir = globalData.curDir + "img" + globalData.modifyName + "/";
+						var oldnameTXT = "Data" + globalData.modifyName + ".txt";
+						var oldNameImage = "Image" + globalData.modifyName + ".jpg";
+						
+						$cordovaFile.removeFile(							//destroy old txt packet in old folder
+							oldNameDir, 
+							oldnameTXT
+						).then(function () {
+							$cordovaFile.createDir(								//create nameDir location
+								globalData.curDir, 
+								"img" + filename, false
+							);
+						}).then(function () {
+							$cordovaFile.moveFile(								//move image to nameDir location
+								oldNameDir, 
+								oldNameImage, 
+								nameDir,
+								nameImage
+							);
+						}).then(function () {
+							self.writeTXT(nameDir, nameTXT, dataContent);				//write new txt packet
+						}).then(function () {
+							$cordovaFile.removeDir(								//destroy old folder
+								globalData.curDir,
+								"img" + globalData.modifyName
+							);
+						}).then(function () {
+							$cordovaFile.removeFile(globalData.curDir, "dir.txt");
+						}).then(function () {
+							return self.writeTXT(globalData.curDir, "dir.txt", dirList);
+						}).then(function() {
+							resolve("finish");
+						});
+					}
 				});
 			}
 			
-			else if (globalData.modifyName === filename) {		//if image being edited has the same name as before 
-				
-				$cordovaFile.removeFile(nameDir, nameTXT)
-				.then(function () {
-					self.writeTXT(nameDir, nameTXT, dataContent);
-				}).then(function() {
-					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
-				}).then(function () {
-					return self.writeTXT(globalData.curDir, "dir.txt", dirList);
-				}).then(function() {
+			else {
+				if(globalData.modifyName == null) {
+					globalData.labelArray.push(sentData);
+					globalData.previewImages.push(Photo.image);
+					globalData.dirList.push("img" + filename + "/");
 					resolve("finish");
-				});
-			}
-								
-			else {												//if image being edited is changing name
-				
-				var pos = dirList.indexOf("img" + globalData.modifyName + "/");
-				var temp1 = dirList.substring(0, pos);
-				var temp2 = dirList.substring(pos + ("img" + globalData.modifyName + "/").length);
-				
-				dirList = temp1 + "img" + filename + "/" + temp2;
-				
-				var oldNameDir = globalData.curDir + "img" + globalData.modifyName + "/";
-				var oldnameTXT = "Data" + globalData.modifyName + ".txt";
-				var oldNameImage = "Image" + globalData.modifyName + ".jpg";
-				
-				$cordovaFile.removeFile(							//destroy old txt packet in old folder
-					oldNameDir, 
-					oldnameTXT
-				).then(function () {
-					$cordovaFile.createDir(								//create nameDir location
-						globalData.curDir, 
-						"img" + filename, false
-					);
-				}).then(function () {
-					$cordovaFile.moveFile(								//move image to nameDir location
-						oldNameDir, 
-						oldNameImage, 
-						nameDir,
-						nameImage
-					);
-				}).then(function () {
-					self.writeTXT(nameDir, nameTXT, dataContent);				//write new txt packet
-				}).then(function () {
-					$cordovaFile.removeDir(								//destroy old folder
-						globalData.curDir,
-						"img" + globalData.modifyName
-					);
-				}).then(function () {
-					$cordovaFile.removeFile(globalData.curDir, "dir.txt");
-				}).then(function () {
-					return self.writeTXT(globalData.curDir, "dir.txt", dirList);
-				}).then(function() {
+				}
+				else {
+					var index = globalData.dirList.indexOf(globalData.modifyName);
+					globalData.labelArray[index] = sentData;
+					globalData.previewImages[index] = Photo.image;
+					globalData.dirList[index] = "img" + filename + "/";
 					resolve("finish");
-				});
+				}
 			}
-		});
 		});
 	};
 	

@@ -4,9 +4,9 @@
             <h3>Market Stuff!</h3>
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <div ng-repeat="image in previewImages" class = 'setPhoto'>
+            <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>
 				<!-- set title?-->
-				<img ng-src = "{{previewImages[$index]}}">
+				<img ng-src = "{{globalDataService.previewImages[$index]}}">
 				<a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><a ng-click="customFileIOService.changePage($index, 'loctest')">Test</a>
 			</div>
        </div> 

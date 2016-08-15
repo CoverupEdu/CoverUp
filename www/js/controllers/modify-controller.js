@@ -2,22 +2,13 @@
 Controls the modify page.
 Comments refer to content above */
 app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$cordovaFile', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function(globalData, $state, customFileIO, $cordovaFile, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
-    Labels.labels;		//mirror general labels to local copy
     $scope.photoService = Photo;		
 	globalData.canEditLabel = false;	//var for whether label can be edited
 	$scope.curIndex = 0;				//var determining which label the popover is assigned to			
 	globalData.curLabel;				//the actual name of the label specified by curIndex			
 	$scope.labelStyle = [];				//array of coordinates of each label
 	globalData.popOpen = false;			//boolean for determining whether popover is shown
-	$scope.labels = Labels.labels;
-	
-	$scope.$watch(function() { 
-		return Labels.labels;
-		}, function(newValue, oldValue) {
-			$scope.labels = newValue;
-			console.log($scope.labels);
-		}
-	);
+	$scope.LabelsService = Labels;
 	
 	$ionicPopover.fromTemplateUrl('templates/modify-popover.html', {
         scope: $scope
@@ -60,7 +51,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	}
 	
 	$rootScope.checkNull = function() {
-			if (Labels.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
+		if (Labels.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
 	}
 	
 	//if the label is empty, the label(/button) is deleted.
@@ -115,13 +106,15 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	//~~~~~~~~~~~~~~~~~
 	
 	$scope.callSave = function() {
-		customFileIO.saveSet(JSON.stringify(Labels.labels))
+		globalData.showSets = false;
+		customFileIO.saveSet(Labels.labels)
 		.then(function() {
-			console.log("loaddirs");
-			customFileIO.loadDirList();
+			return customFileIO.loadDirList();
 		}).then(function() {
-			console.log("transition");
-			$state.transitionTo('index');
+			$state.go('index');
+			$timeout(function() {
+				globalData.showSets = true;
+			}, 400);
 		});
 	}
 }])
