@@ -2,8 +2,8 @@
 	<ion-content class="content-positive">
 		<div id="imghld2" class="img-holder">
 			<img id="imagecont2" class="image" ng-click="switchOpenAll(false)" ng-src="{{photoService.image}}">
-			<button ng-if="!openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-click="openPopover($event, $index)" ng-style="labelStyle[$index]"></button>
-            <button ng-if="openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-style="labelStyle[$index]"><div class="fakePop">{{label.label}}</div></button>
+			<button ng-if="!openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labelsService.labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-click="openPopover($event, $index)" ng-style="labelStyle[$index]"></button>
+            <button ng-if="openAll" style="margin-top:-23px !important; margin-left:-20px !important" ng-repeat="label in labelsService.labels" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" ng-style="labelStyle[$index]"><div class="fakePop">{{label.label}}</div></button>
 		</div>
 	</ion-content>
  <div style="position:fixed; bottom:0%; right:0%; width:82px; height:73px; background-color:white; border-radius:3px">

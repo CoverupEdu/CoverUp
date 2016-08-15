@@ -4,9 +4,13 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('starter', ['ionic', 'ngCordova']);
-app.run(function($ionicPlatform, $rootScope) {
+app.run(function($ionicPlatform, globalData) {
     $ionicPlatform.ready(function() {
-        if(window.cordova && window.cordova.plugins.Keyboard) {
+		globalData.emitReady();
+		
+		
+		//DO NOT ENTER ANY COMMANDS AFTER THIS POINT
+		if(window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -65,9 +69,5 @@ app.directive('resize', function ($window) {
         });
     }
 })
-
-app.controller('name-here-controller', function($scope, $ionicPopover, $rootScope, $timeout) {
-	
-	});
 
 

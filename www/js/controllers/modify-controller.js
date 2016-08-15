@@ -1,15 +1,14 @@
 /*CONTROLLER: modify-controller
 Controls the modify page.
-Injects: $scope, $rootScope, $ionicPopover, Photo, Labels, Sets
 Comments refer to content above */
-app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function($cordovaFile, $ionicLoading, $location, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
-    $scope.labels = Labels.labels;		//mirror general labels to local copy
+app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$cordovaFile', '$anchorScroll', '$timeout', '$rootScope', '$window', '$ionicScrollDelegate', '$scope', '$ionicPopover', 'Photo', 'Labels', 'Sets', function(globalData, $state, customFileIO, $cordovaFile, $anchorScroll, $timeout, $rootScope, $window, $ionicScrollDelegate, $scope, $ionicPopover, Photo, Labels, Sets) {
     $scope.photoService = Photo;		
-	$rootScope.canEditLabel = false;	//var for whether label can be edited
+	globalData.canEditLabel = false;	//var for whether label can be edited
 	$scope.curIndex = 0;				//var determining which label the popover is assigned to			
-	$rootScope.curLabel;				//the actual name of the label specified by curIndex			
+	globalData.curLabel;				//the actual name of the label specified by curIndex			
 	$scope.labelStyle = [];				//array of coordinates of each label
-	$rootScope.popOpen = false;			//boolean for determining whether popover is shown
+	globalData.popOpen = false;			//boolean for determining whether popover is shown
+	$scope.LabelsService = Labels;
 	
 	$ionicPopover.fromTemplateUrl('templates/modify-popover.html', {
         scope: $scope
@@ -29,7 +28,7 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
     */
 	
 	$scope.setStyleAll = function() {
-		for (i = 0; i < $scope.labels.length; i++) {
+		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
 	}
@@ -38,8 +37,8 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 	
 	$scope.setStyle = function(val) {
 		$scope.labelStyle[val] = {
-			left: ($scope.labels[val].x * 0.01 * document.getElementById('imagecont').getBoundingClientRect().width + 'px'),
-			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height + 'px')
+			left: (Labels.labels[val].x * 0.01 * document.getElementById('imagecont').getBoundingClientRect().width + 'px'),
+			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height + 'px')
 		};
 	}
 	
@@ -51,14 +50,8 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 		$scope.setStyleAll();
 	}
 	
-    $scope.swapcanEditLabel = function(boole) {
-        if (boole) {$rootScope.canEditLabel = !$rootScope.canEditLabel;}
-        else {$rootScope.canEditLabel = false;}
-        $scope.labels[$scope.curIndex].label = $rootScope.curLabel;
-    }
-	
 	$rootScope.checkNull = function() {
-			if ($scope.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
+		if (Labels.labels[$scope.curIndex].label.length == 0) {$scope.deleteLabel();}
 	}
 	
 	//if the label is empty, the label(/button) is deleted.
@@ -66,7 +59,7 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 	$scope.eventManage = function($event) {
 		$scope.addControl($event); 
 		$timeout(function() {
-			$scope.clickButton($scope.labels.length - 1);
+			$scope.clickButton(Labels.labels.length - 1);
 		}, 0);
 		$rootScope.editButton();
 	}
@@ -84,9 +77,9 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 	
     $scope.openPopover = function(event, index) {
 		$timeout(function() {
-			$ionicScrollDelegate.scrollTo(0, $scope.labels[index].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height - 50, true)
+			$ionicScrollDelegate.scrollTo(0, Labels.labels[index].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height - 50, true)
 		},50)
-		$rootScope.popOpen = true;
+		globalData.popOpen = true;
         $scope.index = {value:index};
 		$scope.curIndex = index;
 		$rootScope.insReset();
@@ -94,7 +87,7 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 			$scope.popover.show(event);
 		}, 400)
 		$rootScope.textFocus();
-		$rootScope.curLabel = $scope.labels[$scope.curIndex].label;
+		globalData.curLabel = Labels.labels[$scope.curIndex].label;
     }
 
 	//scroll to label, open popover, set current label as clicked label, 'focus' text (i.e. textbox is selected)
@@ -108,18 +101,22 @@ app.controller('modify-controller', ['$cordovaFile', '$ionicLoading', '$location
 	
 	//select appropriate element of the 'modify' html DOM.
 
+	
+	
 	//~~~~~~~~~~~~~~~~~
 	//Save Feature
 	//~~~~~~~~~~~~~~~~~
 	
-	$scope.saveSet = function() {
-		$cordovaFile.copyFile(
-			$rootScope.sourceDirectory, $rootScope.sourceFileName, $rootScope.targetDirectory, $rootScope.sourceFileName //source directory, source file name, target directory, target file name (here same as source)
-		).then(function(success) {
-			$rootScope.fileName = $rootScope.targetDirectory + $rootScope.sourceFileName;
-		})
-		Sets.setImage(Photo.image);
-		Sets.setLabels($scope.labels);
-		console.log($rootScope.setService.image.length);
+	$scope.callSave = function() {
+		globalData.showSets = false;			//prevent sets from loading/lagging up app
+		customFileIO.saveSet(Labels.labels)		//save labels of current set
+		.then(function() {
+			return customFileIO.loadDirList();	//load new range of sets to sets page
+		}).then(function() {
+			$state.go('index');					
+			$timeout(function() {
+				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
+			}, 400);
+		});
 	}
 }])
