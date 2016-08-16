@@ -99,7 +99,7 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
                 if (tempInput[i] != tempCurrentLabel[i])
                 {
                     tempInput[i] = tempCurrentLabel[i]
-                    if (tempInput = tempCurrentLabel) {
+                    if (tempInput == tempCurrentLabel) {
                         return true;
                     }
                     else
@@ -116,7 +116,7 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
                 if (tempInput[i] != tempCurrentLabel[i])
                 {
                     tempInput.splice(i,1)
-                    if (tempInput = tempCurrentLabel)
+                    if (tempInput == tempCurrentLabel)
                     {
                         return true;
                     }
@@ -135,7 +135,7 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
                 if (tempInput[i] != tempCurrentLabel[i])
                 {
                     tempCurrentLabel.splice(i, 1)
-                    if (tempInput = tempCurrentLabel)
+                    if (tempInput == tempCurrentLabel)
                     {
                         return true;
                     }
