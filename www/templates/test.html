@@ -1,0 +1,28 @@
+<ion-view view-title="Test" resize ng-app="app">
+	<ion-nav-buttons side="right">
+	</ion-nav-buttons>
+  
+	<ion-content class="content-positive">
+		<div id="imghld2" class="img-holder">
+			<img id="imagecont2" class="image" ng-src="{{photoService.image}}">
+			
+			<div ng-repeat="label in labels">
+                <div ng-show="IsItTheRightButton($index)" style="margin-top:-23px !important; margin-left:-20px !important" class="button energized button-icon icon ion-ios-circle-filled label" ng-style="labelStyle[$index]" id="locbutton{{$index}}">
+                </div>
+            </div>
+		</div>
+	</ion-content>
+
+<div class="bar bar-footer bar-coverupOrange" style="height: 80px !important; font-size: 20px;">
+    <label class="item item-input" style="margin-right: 1%;">
+        <span class="input-label" >Label name:</span>
+        <input type="text" ng-model="answer">
+    </label>
+    <button ng-click="EnterNextAnswer()" style="background-color:white; border:0px; border-radius:2px; margin-right:10px;">Enter</button>
+    <p style="margin-right: 10%;">
+          {{correctORwrong}}
+    </p>
+    <p ng-show="finished">  Your Score is {{score}} / {{labels.length}}</p>
+</div>
+</ion-view>
+

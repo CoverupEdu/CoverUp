@@ -1,9 +1,9 @@
 // CONTROLLER: loctest-controller
 // Controls the loctest page.
-app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function($timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
-    $scope.labels = Labels.labels;
+app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function(globalData, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
+    $scope.labelsService = Labels;
+	$scope.photoService = Photo;
 	$scope.testIndex = [];
-    $scope.photoService = Photo;
 	$scope.curIndex1 = 0;
 	$scope.curIndex2 = 0;
 	$scope.labelStyle = [];
@@ -13,23 +13,24 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	$scope.showCross = false;
 	$scope.showButtons = true;
 	$scope.answer_toggled = false;
+	$scope.showAnsText = "Show Answer";
 	
-	var toggle_answer_btn = document.getElementById("loctestShowAnswerButton");
+	$scope.toggleButtons = function() {$scope.showButtons = !$scope.showButtons;}	//needed because invoked in DOM through angular
+	
+	var toggle_answer_btn = document.getElementById("loctestShowAnswerButton");	//define variable as HTML DOM element for Show Answer button
 
 	$timeout(function() {
-		for (var i = 0; i < $scope.labels.length; i++) {
+		for (var i = 0; i < Labels.labels.length; i++) {		//create array of indexes of original labels (starts as 0, 1, 2, 3... n)
 			$scope.testIndex.push(i);
 		}
 	}, 0)
 	
-	$scope.toggleButtons = function() {$scope.showButtons = !$scope.showButtons;}
-	
-	$scope.selectLabel = function() {
+	$scope.selectLabel = function() {		//choose new label to be tested for 
 		if ($scope.testIndex.length == 0) {
 			console.log("unfinished");
 		} 
 		else {
-			$scope.curIndex1 = Math.floor($scope.testIndex.length * Math.random());
+			$scope.curIndex1 = Math.floor($scope.testIndex.length * Math.random());		//explanation for these two lines at the bottom of the page
 			$scope.curIndex2 = $scope.testIndex[$scope.curIndex1];
 		}
 		if ($scope.answer_toggled == true) { /*This toggles back the styling of the show answer button after the timeout reset once you've clicked it.*/
@@ -39,50 +40,56 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 	}
 	
 	/*Sorry this function has ended up so expanded - It was getting headachy to read it*/
-	$scope.clickManage = function(event, num, button) {
-		if ($scope.showResult) {
+	$scope.clickManage = function(event, num, button, user) {	//passed vars are: click event details, index of button in DOM clicked, whether buttons are displayed, and whether the user is clicking or if the show answer button was clicked
+		if ($scope.showResult) {							//if currently showing result phase
+			$scope.showAnsText = "Show Answer"
 			$scope.showResult = false;
 			$scope.showTick = false;
 			$scope.showCross = false;
 			$scope.testIndex.splice($scope.curIndex1, 1);
 			$scope.selectLabel();
 		} 
-		else if ($scope.showButtons && !button) {}
-		else {
+		else if ($scope.showButtons && !button) {}			//illegitimate click (not clicking on button while buttons are displayed)
+		else {												//if something is legally clicked while in test phase
+			$scope.showAnsText = "Proceed";
 			$scope.showResult = true;
-			
-			if (!button) {
-				var x = Math.pow((event.offsetX - ($scope.labels[$scope.curIndex2].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width)), 2) +
-						Math.pow((event.offsetY - ($scope.labels[$scope.curIndex2].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height)), 2);
-				if (x <= 6400) {
-					$scope.answerResult = true;
-				} 
+			if (user)										//if the user clicked (not applied if show answer clicked because assumed that answer is correct)
+			{
+				if (!button) {
+					var x = Math.pow((event.offsetX - (Labels.labels[$scope.curIndex2].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width)), 2) +
+							Math.pow((event.offsetY - (Labels.labels[$scope.curIndex2].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height)), 2);
+					if (x <= 6400) {						//pythagorean implementation of whether clicked point lies within 80 pixels of correct label position (80 squared = 6400)
+						$scope.answerResult = true;
+					} 
+					else {
+						$scope.answerResult = false;
+					}
+					
+					$scope.crossLoc = {	
+						left: (event.offsetX  + 'px'),
+						top: (event.offsetY + 'px')
+					};
+				}
+				
 				else {
-					$scope.answerResult = false;
+					if ($scope.curIndex2 == num) {			//if index of button clicked was correct label
+						$scope.answerResult = true;
+					}
+					else {
+						$scope.answerResult = false;
+					}
+					
+					$scope.crossLoc = {
+							left: ($scope.labelStyle[num].left),
+							top: ($scope.labelStyle[num].top)
+					};
 				}
-				
-				$scope.crossLoc = {
-					left: (event.offsetX  + 'px'),
-					top: (event.offsetY + 'px')
-				};
 			}
-			
-			else {
-				
-				if ($scope.curIndex2 == num) {
-					$scope.answerResult = true;
-				}
-				else {
-					$scope.answerResult = false;
-				}
-				
-				$scope.crossLoc = {
-						left: ($scope.labelStyle[num].left),
-						top: ($scope.labelStyle[num].top)
-				};
+			else {											//if 'show answer' clicked, asume answer correct
+				$scope.showTick = true;
+				$scope.answerResult = true;
 			}
-			
-			$scope.showTick = true;
+			$scope.showTick = true;							//if the answer was right, don't bother showing the cross
 			if ($scope.answerResult == false) {
 				$scope.showCross = true;
 			}
@@ -92,21 +99,21 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 		}
 	}
 	
-	$timeout(function() {
+	$timeout(function() {			//initialise style
 		$scope.selectLabel();
 		$scope.setStyleAll();
 	})
 	
 	$scope.setStyleAll = function() {
-		for (i = 0; i < $scope.labels.length; i++) {
+		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
 	}
 	
 	$scope.setStyle = function(val) {
 		$scope.labelStyle[val] = {
-			left: ($scope.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
-			top: ($scope.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
+			left: (Labels.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
+			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
 		};
 	}
 	
@@ -115,7 +122,15 @@ app.controller('loctest-controller', ['$timeout', '$ionicScrollDelegate', '$scop
 		toggle_answer_btn.classList.toggle("toggle_show_btn");
 		$scope.answer_toggled = true;
 		$timeout(function() {
-			angular.element(document.getElementById('locbutton'+$scope.curIndex2.toString())).triggerHandler('click');
+			$scope.clickManage(null, 0, true, false);		//make a click on an undefined point on the DOM with the assumption that it's a correct click (from the false boolean)
 		}, 0);
 	}
 }])
+
+/*
+Consider an ordered hand of cards, each with a number written on it.
+The first hand received is 1, 2, 3, 4, 5. The first card is 1, the second is 2 etc. Here the values are self-referential in terms of ordinal position
+Assume we don't need the second card anymore (second button is clicked in DOM and no longer tested for).
+It is removed from the pack, leaving 1, 3, 4, 5. The first card is 1, the second card is 3, the third is 4, the fourth is 5. They are no longer self-referential in terms of ordinal position.
+The 'testIndex' allows an array of indices referring to the Labels array (containing labels for a set) to be referred to (e.g. 0, 2, 4, 5) and manipulated without affecting the original Labels array.
+*/

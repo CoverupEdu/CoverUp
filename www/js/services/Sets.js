@@ -3,7 +3,7 @@
 app.service('Sets', [function() {
 	this.image = [];
 	this.name = "";
-	this.subject	= "";
+	this.subject = "";
 	
 	this.setImage = function(x) {
 		this.image = x;	
