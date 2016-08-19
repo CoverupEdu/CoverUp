@@ -51,12 +51,12 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 #home-dropdown {
     position: fixed;   /*~~Positioning*/
-    height: 120px;
+    height: 80px;
     width: 100%;
     bottom: 0;
     text-align: center;
 
-    font-size: 20px;   /*~~Styling*/
+    font-size: 15px;   /*~~Styling*/
     background-color: #F79522;
 }
 #home-dropdown ul {
@@ -79,46 +79,39 @@
 #home-dropdown > ul > li {
     position: relative;   /*~~Positioning*/
     display: inline-block;
-    padding: 2.5px 0px;
-    margin: 27.5px 0px;
+    padding: 12px 0px;
     vertical-align: top;
     line-height: 30px;
     text-align: center;
+    width: 100px;
     
-    -webkit-border-radius: 7.5px;   /*~~Styling*/
-    -moz-border-radius: 7.5px;
-    border-radius: 7.5px;
-    width: 200px;
-    border: 1px solid #FFFFFF;
 }
 #home-dropdown > ul > li span {
     display: block;
 }
 
 #home-dropdown > ul > li > a {
-    color: #FFFFFF;   /*~~Styling*/
+    color: rgb(250, 250, 250);   /*~~Styling*/
     
     -webkit-transition: color .15s;   /*~~Animations*/
     -moz-transition: color .15s;
     -o-transition: color .15s;
     transition: color .15s;
 }
-#home-dropdown > ul > li > a:hover {
-    color: rgb(250, 250, 250);
-}
 #home-dropdown > ul > li > ul {
     opacity: 0;   /*~~This makes menu hidden until further overriden (moused over)*/
     visibility: hidden;
     
     position: absolute;   /*~~Positioning*/
-    padding: 16px 0 20px 0;
-    margin-left: -90px;
+    padding: 0;
+    margin-left: -300%;
     left: 50%;
     bottom: 55px; /*See comment in next class*/
-    width: 180px;
+    width: 400%;
+    height: 100px;
     text-align: center;
 
-    background-color: rgb(250, 250, 250);   /*~~Styling*/
+    background-color: #CCCCCC;  /*~~Styling*/
     font-size: 15px;    
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -132,17 +125,11 @@
     -o-transition: all .25s;
     transition: all .25s;
 }
-#home-dropdown > ul > li:hover > ul {
-    opacity: 1;   /*Menu is now visible - previously defined visibility being overriden*/
-    visibility: visible;
-        
-    bottom: 75px; /*The difference between this bottom: value and the bottom: value in the previous class determines how far the menu moves in the slide in animation*/
-}
 #home-dropdown > ul > li > ul:before {  /*This adds the small arrow on the bottom of the dropdown menu*/
     position: absolute;   /*~~Positioning*/
     display: block;
     bottom: -20px;
-    left: 50%;
+    left: 75%;
     margin-left: -10px;
     
     content:"";   /*~~Styling*/
@@ -150,35 +137,55 @@
     border-style: solid;
     border-width: 10px;
 }
-#home-dropdown > ul ul > li {
+#home-dropdown > ul ul > li a {
     position: relative;
+    float: left;
+    width: 33.3333%;
+    height: 100%;
+    padding: 0;
 }
+
 #home-dropdown ul ul a {
-    padding: 5px 8px 7px 16px;   /*~~Positioning*/
     display: block;
-    
     color: rgb(50, 50, 50);   /*~~Styling*/
     background-color: rgb(250, 250, 250);
+    line-height: 100px;
     
     -webkit-transition: background-color .25s;   /*~~Animations*/
     -moz-transition: background-color .25s;
     -o-transition: background-color .25s;
     transition: background-color .25s;
 }
-#home-dropdown ul ul a:hover {
-    background-color: rgb(240, 240, 240);
+#option1 {
+    -webkit-border-radius: 5px 0px 0px 5px;
+    -moz-border-radius: 5px 0px 0px 5px;
+    border-radius: 5px 0px 0px 5px;
 }
-#home-dropdown ul ul li {
-    border-left: 4px solid rgb(250, 250, 250); /*Previously hidden left border is only visible when dropdown menu element is moused over (It's always there, but matches the colour of the background)*/
-    
-    -webkit-transition: border .25s;   /*~~Animations*/
-    -moz-transition: border .25s;
-    -o-transition: border .25s;
-    transition: border .25s;   
+#option3 {
+    -webkit-border-radius: 0px 5px 5px 0px;
+    -moz-border-radius: 0px 5px 5px 0px;
+    border-radius: 0px 5px 5px 0px;
 }
-#home-dropdown ul ul li:hover {
-    border-left: 4px solid #F79522; /*Colour change to orange now makes it visible when moused over.*/
+
+#option1:before, #option2:before {
+    content: " ";
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 0px;
+    bottom: 10px;
+    border-right: .5px solid #F79522;
 }
+#option3:before, #option2:before {
+    content: " ";
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 0px;
+    bottom: 10px;
+    border-left: .5px solid #F79522;
+}
+
 .toggle-home-btn, .toggle-home-btn > a > span {   /*This class gets toggled when a button is hovered over / clicked*/
     -webkit-transition: all .25s;   /*~~Animations*/
     -moz-transition: all .25s;
@@ -186,12 +193,52 @@
     transition: all .25s;
 }
 .toggle-home-btn {
-    background-color: #FFFFFF;   /*~~Styling*/
+    background-color: rgb(250, 250, 250);   /*~~Styling*/
 }
 .toggle-home-btn > a > span {
     color: #F79522;   /*~~More Styling*/
 }
+.toggle-home-btn #button3list { /*Why isn't it possible to do ".toggle-home-btn > ul {"? Which should really do the same thing? I have no idea either. Very strange bugs.*/
+    opacity: 1;
+    visibility: visible; /*This class only makes the dropdown menu visible, which has already been built but is invisible to the user*/
+    bottom: 75px;   
+}
 
+/*~~~~~~~~~~~~~~~~*/
+/*Some specific home button styling for mobile*/
+/*~~~~~~~~~~~~~~~~*/
+
+#button1 {
+    position: relative;
+    padding-right: 15px;
+}
+#button2 {
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+#button3 {
+    position: relative;
+    padding-left: 15px;
+}
+#button1:before, #button2:before {
+    content: " ";
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 0px;
+    bottom: 10px;
+    border-right: .5px solid #FFFFFF;
+}
+#button3:before, #button2:before {
+    content: " ";
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 0px;
+    bottom: 10px;
+    border-left: .5px solid #FFFFFF;
+}
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*Styling for set page*/
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
