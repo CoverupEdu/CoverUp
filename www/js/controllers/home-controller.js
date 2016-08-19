@@ -141,6 +141,10 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         sets.style.display = "block";
     }
     
+    toggleCreate = function() {
+        btn3.classList.toggle("toggle-home-btn");
+    }
+    
      btn1.onclick = function() {
         enableMarket();
     }
@@ -149,15 +153,9 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         enableSets();
     }
 
-    $(btn3).hover(
-        function() {
-            $(this).addClass("toggle-home-btn");
-        }, 
-        function() {
-            $(this).removeClass("toggle-home-btn");
-        }
-    );
-    
+    btn3.onclick = function() {
+        toggleCreate();
+    }    
     enableSets(); //Set tab is open by default
     
 }]);
