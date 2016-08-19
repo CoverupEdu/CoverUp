@@ -71,7 +71,7 @@
     text-decoration: none;   /*~~Styling*/
 }
 #home-dropdown li {
-    margin: 0   /*~~Positioning*/
+    margin: 0;   /*~~Positioning*/
     padding: 0;  
     
     cursor: pointer;   /*~~Styling*/
@@ -420,4 +420,27 @@ margin-top:-10px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     height:auto;
     padding-bottom:15px;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*Styling for modify page (save popover)*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.save_popover_style {
+
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    
+    min-width: 200px;
+    min-height: 200px;
+    
+    display:block;
+    
+    position: absolute;
+    
+    background-color: grey;   
+    
+    z-index: 5;
 }

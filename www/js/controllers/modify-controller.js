@@ -16,6 +16,18 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
         $scope.popover = popover;
 	});
     
+    $ionicPopover.fromTemplateUrl('templates/save-popover.html', {
+        scope: $scope
+    }).then(function(popover) {
+        $scope.save_popover = popover;
+	});
+	
+	$scope.openSavePopover = function(event) {
+		$timeout(function() {
+			$scope.save_popover.show(event);
+		}, 200);
+	}
+		
 	/*
 	One popover is generated from the html template specified, and assigned to local scope.
 	Only one popover ever exists in the application; what changes is its position and contents according to which label is selected.
@@ -128,8 +140,6 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	//Saving Popover
 	//~~~~~~~~~~~~~~~~~
 	
-	$ionicPopover.fromTemplateUrl('templates/save-popover.html', {
-        scope: $scope
-    }).then(function(popover) {
-        $scope.save_popover = popover;
-	});
+	
+	
+	
