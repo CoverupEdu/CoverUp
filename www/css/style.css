@@ -427,20 +427,15 @@ margin-top:-10px !important;
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 .save_popover_style {
-
-    top: 0px;
-    right: 0px;
-    left: 0px;
-    bottom: 0px;
-    
-    min-width: 200px;
-    min-height: 200px;
-    
-    display:block;
-    
-    position: absolute;
-    
+    height: 100% !important;
+    width: 100% !important;
+    margin-left: auto;
+    padding: 0;
     background-color: grey;   
-    
-    z-index: 5;
+}
+.save_popover_style ion-content {
+    position: relative !important;
+}
+.platform-android .save_popover_style {
+       margin-top: 10px !important;
 }
