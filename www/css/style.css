@@ -436,18 +436,44 @@ margin-top:-10px !important;
     
     background-color: grey !important;
     opacity: 0.6 !important;
+    
 }
 .save_popover_style ion-content {
+    position: absolute;
+    display: block; 
+	margin: auto !important;
+    width: 250px;
+    height: 450px;
+	
+	float: left;
+    
+    background-color: rgba(0,255,0,1);
+	
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
-.save_popover_style ion-content > div {
-    position absolute;
-    display: block;
-    width: 100px;
-    height: 300px;
-    margin: auto;
-    
-    background-color: green;
+.save_popover_style.exit_btn {
+    position: absolute;
+	display: block;
+	width: 20px;
+    height: 20px;
+    margin-left: 3px;
+	margin-top: 3px !important;
+
+	text-align: center;
+	
+	padding: 0px;
+	
+	cursor: pointer;
+	
+	background-color: rgba(0,0,255,1) !important;
+	
+    color: black;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 .platform-android .save_popover_style {
        margin-top: 10px;
