@@ -5,11 +5,8 @@ app.controller('save-popover-controller', ['globalData', '$state', 'customFileIO
 	
 	console.log("save popover is running!");
 	
-	function resize() {
-		
-		$('.save_popover_style').css({
-			width: $(window).width(),
-			height: $(window).height()	
-		});	
-	}
+	$scope.setTitle = "";
+	$scope.setSubject = "";
+	
+	
 }])
