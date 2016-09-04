@@ -10,7 +10,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	globalData.popOpen = false;			//boolean for determining whether popover is shown
 	$scope.LabelsService = Labels;
 	
-	$scope.setTitle = "cunt";  //Intermediate vars to store the name and subject of the set while saving
+	$scope.setTitle = "";  //Intermediate vars to store the name and subject of the set while saving
 	$scope.setSubject = "";
 	
 	$ionicPopover.fromTemplateUrl('templates/modify-popover.html', {
