@@ -71,7 +71,7 @@
     text-decoration: none;   /*~~Styling*/
 }
 #home-dropdown li {
-    margin: 0   /*~~Positioning*/
+    margin: 0;   /*~~Positioning*/
     padding: 0;  
     
     cursor: pointer;   /*~~Styling*/
@@ -420,4 +420,192 @@ margin-top:-10px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     height:auto;
     padding-bottom:15px;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*Styling for modify page (save popover)*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.save_popover_style {
+    position: absolute; /*~~Shape*/
+    
+    height: 101%; /*~~Positioning*/
+    width: 100%;
+    left: 0 !important;
+    top: 0 !important;
+    
+    background-color: white !important; /*~~Styling*/
+    opacity: 0.9 !important;
+    
+}
+.save_popover_style ion-content {
+    position: absolute; /*~~Shape*/
+    display: block; 
+    float: left;
+    
+	margin: auto !important; /*~~Positioning*/
+    width: 250px;
+    height: 450px;
+    
+    background-color: #F79522; /*~~Styling*/
+    -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+    -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
+	
+	-webkit-border-radius: 5px; /*~~Border*/
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	border: solid white 1.3px;
+}
+
+.save_popover_style.exit_btn {
+    position: absolute; /*~~Shape*/
+	display: block;
+	
+	width: 20px; /*~~Positioning*/
+    height: 20px;
+    margin-left: 3px;
+	margin-top: 3px !important;
+	
+	color: white; /*~~Text*/
+	text-align: center;
+	line-height: 19px;
+		
+	cursor: pointer; /*~~Styling*/
+	background-color: #F79522 !important;
+	
+	-webkit-border-radius: 5px; /*~~Border*/
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	border: 0.5px solid white;
+}
+
+.save_popover_style.title_text {
+    position: absolute; /*~~Shape*/
+    display: block;
+    
+    width: 80%; /*~~Positioning*/
+    height: 50px;
+    margin-left: 10%;
+    margin-top: 40px !important;
+    
+    border-style: none; /*~~Border*/
+	background-color: #F79522 !important;
+    
+    color: white; /*~~Text*/
+    font-size: 22px;
+	text-align: center;
+	line-height: 50px;
+}
+
+.save_popover_style.title_input {
+	position: absolute; /*~~Shape*/
+	display: block;
+	
+	width: 80%; /*~~Positioning*/
+	height: 30px;
+	margin-left: 10%;
+	margin-top: 100px !important;
+	padding-left: 8px;
+	
+	-webkit-border-radius: 4px; /*~~Border*/
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+	border: solid #F79522 1px;
+	
+	transition: border-left 0.25s; /*~~Animations*/
+}
+
+.save_popover_style.title_input:focus {
+	border-left: solid #ffb366 4px;  /*Toggles 'focused' colour indicator on click*/
+}
+
+.save_popover_style.subject_text {
+    position: absolute; /*~~Shape*/
+    display: block;
+    
+    width: 90%; /*~~Positioning*/
+    height: 75px;
+    margin-left: 5%;
+    margin-top: 165px !important;
+    
+    border-style: none; /*~~Styling*/
+	background-color: #F79522 !important;
+    
+    color: white; /*~~Text*/
+    font-size: 22px;
+	text-align: center;
+	line-height: 75px;
+	
+	border-top: solid white 1px; /*~~Border*/
+}
+
+.save_popover_style.subject_input {
+    position: absolute; /*~~Shape*/
+	display: block;
+	
+	width: 80%; /*~~Positioning*/
+	height: 30px;
+	margin-left: 10%;
+	margin-top: 225px !important;
+	padding-left: 8px;
+	
+	-webkit-border-radius: 4px; /*~~Border*/
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+	border: solid #F79522 1px;
+	
+	transition: border-left 0.25s; /*~~Animations*/
+}
+
+.save_popover_style.subject_input:focus {
+	border-left: solid #ffb366 4px; /*Toggles 'focused' colour indicator on click*/
+}
+
+.save_popover_style.line {
+	position: absolute; /*Shape*/
+	display: block;
+	
+	width: 90%; /*Positioning*/
+	margin-left: 5%;
+	margin-top: 290px !important;
+	
+	border-top: solid white 1px; /*~~Border*/
+}
+
+.save_popover_style.save_btn {
+    position: absolute; /*~~Shape*/
+	display: block;
+	
+	width: 70%; /*~~Positioning*/
+	height: 70px;
+	margin-left: 15%;
+	margin-top: 330px !important;
+	
+	background-color: #F79522 !important;
+	cursor: pointer;
+	
+	-webkit-border-radius: 5px; /*~~Border*/
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: solid white 2px;
+	
+	color: white; /*~~Text*/
+	text-align: center;
+	line-height: 66px;
+	font-size: 25px;
+	
+	-webkit-transition: all .25s;   /*~~Animations*/
+    -moz-transition: all .25s;
+    -o-transition: all .25s;
+    transition: all .25s;
+}
+
+.save_popover_style.save_btn:hover, .save_popover_style.save_btn:active { /* Inverts colours on mouse over or click */
+	background-color: white !important;
+	color: #F79522;
+}
+
+.platform-android .save_popover_style {
+       margin-top: 10px;
 }

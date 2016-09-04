@@ -74,12 +74,12 @@ app.service('customFileIO', ['Photo', '$q', 'Labels', 'globalData', '$interval',
 		});
 	}
 	
-	this.saveSet = function(sentData) {
+	this.saveSet = function(sentData, sentName, sentDescription) {
 		return $q(function(resolve, reject) {
 			
 			var dataContent = JSON.stringify(sentData);
 			var dirList = "";
-			var filename = self.chooseRandomName(); 					//name entered while saving goes here
+			var filename = sentName; 					//name entered while saving goes here
 			var nameTXT = "Data" + filename + ".txt";					//name of txt file
 			var nameImage = "Image" + filename + ".jpg";				//name of image file
 			var nameDir = globalData.curDir + "img" + filename + "/";	//directory path of files
