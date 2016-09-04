@@ -10,6 +10,9 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	globalData.popOpen = false;			//boolean for determining whether popover is shown
 	$scope.LabelsService = Labels;
 	
+	$scope.setTitle = "cunt";  //Intermediate vars to store the name and subject of the set while saving
+	$scope.setSubject = "";
+	
 	$ionicPopover.fromTemplateUrl('templates/modify-popover.html', {
         scope: $scope
     }).then(function(popover) {
@@ -103,25 +106,6 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	}
 	
 	//select appropriate element of the 'modify' html DOM.
-
-	
-	
-	//~~~~~~~~~~~~~~~~~
-	//Save Feature
-	//~~~~~~~~~~~~~~~~~
-	
-	$scope.callSave = function() {
-		globalData.showSets = false;			//prevent sets from loading/lagging up app
-		customFileIO.saveSet(Labels.labels)		//save labels of current set
-		.then(function() {
-			return customFileIO.loadDirList();	//load new range of sets to sets page
-		}).then(function() {
-			$state.go('index');					
-			$timeout(function() {
-				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
-			}, 400);
-		});
-	}
 	
 	//~~~~~~~~~~~~~~~~~
 	//Saving Popover
@@ -132,6 +116,21 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
     	}).then(function(popover) {
         	$scope.save_popover = popover;
 		});
+		
+		
+	$scope.callSave = function() {
+		globalData.showSets = false;			//prevent sets from loading/lagging up app
+		$scope.save_popover.remove();      //delete and hide the saving popover
+		customFileIO.saveSet(Labels.labels, document.getElementById('save_title').value, document.getElementById('save_subject'))		//save labels of current set
+		.then(function() {
+			return customFileIO.loadDirList();	//load new range of sets to sets page
+		}).then(function() {
+			$state.go('index');					
+			$timeout(function() {
+				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
+			}, 400);
+		});
+	}
 	
 }])
 
