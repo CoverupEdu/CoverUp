@@ -25,5 +25,6 @@ app.service('globalData', ['$rootScope', function($rootScope) {
 	this.showSets = true;
 	this.isDevice;
 	this.labelArray = [];
+	this.showImage = false;
 	
 }])

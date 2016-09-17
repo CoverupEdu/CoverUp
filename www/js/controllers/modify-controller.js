@@ -9,6 +9,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	$scope.labelStyle = [];				//array of coordinates of each label
 	globalData.popOpen = false;			//boolean for determining whether popover is shown
 	$scope.LabelsService = Labels;
+	$scope.globalDataService = globalData;
 	
 	$scope.setTitle = "";  //Intermediate vars to store the name and subject of the set while saving
 	$scope.setSubject = "";
@@ -33,7 +34,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	
 	
 	
-	$scope.setStyleAll = function() {
+	$rootScope.setStyleAll = function() {
 		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
@@ -53,7 +54,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	$scope.deleteLabel = function() {
 		$scope.popover.hide();
 		Labels.labels.splice($scope.curIndex, 1);
-		$scope.setStyleAll();
+		$rootScope.setStyleAll();
 	}
 	
 	$rootScope.checkNull = function() {
@@ -125,6 +126,19 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 		.then(function() {
 			return customFileIO.loadDirList();	//load new range of sets to sets page
 		}).then(function() {
+			$state.go('index');					
+			$timeout(function() {
+				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
+			}, 400);
+		});
+	}
+	
+	$scope.callDelete = function() {
+		globalData.showSets = false;			//prevent sets from loading/lagging up app
+		customFileIO.deleteSet(globalData.modifyName)
+		.then(function(success) {
+			return customFileIO.loadDirList();
+		}).then(function(success) {
 			$state.go('index');					
 			$timeout(function() {
 				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
