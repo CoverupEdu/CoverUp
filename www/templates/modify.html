@@ -1,13 +1,14 @@
 <ion-view view-title="Modify"  resize ng-app="app">
   <ion-nav-buttons side="right">
-      <a ng-click="save_popover.show($event)" class="button button-clear button-bold button-coverupOrange icon-right ion-ios-arrow-forward">
-      	Save!
+	  <a style="color:white;font-size:30px" ng-click="callDelete()" class="button button-clear button-bold ion-trash-a">
+      </a>
+      <a style="color:white;font-size:30px" ng-click="save_popover.show($event)" class="button button-clear button-bold ion-checkmark">
       </a>
 </ion-nav-buttons>
    <ion-content class="content-positive">
 		<div id="imghld" class="img-holder">
-			<img id="imagecont" class="image" ng-click="eventManage($event)" ng-src="{{photoService.image}}">
-			<button ng-repeat="label in LabelsService.labels" style="margin-top:-23px !important; margin-left:-20px !important" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" id="labelbutton{{$index}}" ng-click="openPopover($event, $index)" ng-style="labelStyle[$index]"></button>
+			<img id="imagecont" class="image" ng-click="eventManage($event)" ng-if="globalDataService.showImage" ng-src="{{photoService.image}}">
+			<button ng-show="globalDataService.showImage" ng-repeat="label in LabelsService.labels" style="margin-top:-23px !important; margin-left:-20px !important" class="button energized button-icon icon ion-ios-circle-filled label" ng-init="setStyle($index)" id="labelbutton{{$index}}" ng-click="openPopover($event, $index)" ng-style="labelStyle[$index]"></button>
 		</div>
 	</ion-content>
 </ion-view>

@@ -85,7 +85,12 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
 			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
 			Photo.setImage(sourcePath);
-			Labels.labels = [];			//refresh loaded labels
+			Labels.labels = [];			//reset loaded labels
+			globalData.showImage = false;
+			$timeout(function() {
+				globalData.showImage = true;
+				$timeout(function() {$rootScope.setStyleAll();}, 50)
+			}, 800);
 			$state.go('modify');		//after taking photo and storing in cache memory, go to modify page
         }, function(err) {
 			$state.go('index');			//if a photo isn't taken, return to home page
