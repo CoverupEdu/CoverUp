@@ -85,7 +85,7 @@ app.service('customFileIO', ['Photo', '$q', 'Labels', 'globalData', '$interval',
 			if(modifyName != null)
 			{
 				$cordovaFile.removeFile(globalData.curDir + "img" + modifyName + "/", "Image" + modifyName + ".jpg")
-				}).then(function() {
+				.then(function() {
 					return $cordovaFile.removeFile(globalData.curDir + "img" + modifyName + "/", "Data" + modifyName + ".txt");
 				}).then(function() {
 					return $cordovaFile.removeDir(globalData.curDir, "img" + modifyName);
