@@ -46,6 +46,9 @@
     font-size: 25px !important; /*Resize arrow in Ready! button*/
 }
 
+.setPhoto:last-child{
+    margin-bottom:30%;
+}
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*Styling for 'Create' button drop down menu on home page (webapp only)*/
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
