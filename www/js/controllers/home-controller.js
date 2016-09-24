@@ -2,7 +2,7 @@
 // Controls home page.
 
 app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(Labels, globalData, customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
-    
+        
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
     var btn3 = document.getElementById("button3");
@@ -166,6 +166,11 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     btn3.onclick = function() {
         toggleCreate();
     }    
+    
+    $(document).on("click", "#home-test-btn", function(e) {
+    	this.classList.toggle("toggle_home_test_dropdown");
+    });
+    
     enableSets(); //Set tab is open by default
     
 }]);
