@@ -421,7 +421,7 @@
     position: absolute;
     overflow: scroll;
     display: inline-block;
-    margin: 15px calc(8% + 170px) 15px calc(6.5% + 120px) !important;
+    margin: 15px calc(8% + 100px) 15px calc(6.5% + 120px) !important;
 }
 .toggle_show_btn, .toggle_show_btn > span {   /*This class gets toggled when a button is hovered over / clicked*/
     -webkit-transition: all .25s;   /*~~Animations*/
