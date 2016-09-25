@@ -394,12 +394,14 @@
 #loctestShowAnswerButton {
     position: absolute;   /*~~Positioning*/
     padding: 10px 40px;
+    padding-left: 0px;
+    padding-right: 0px;
     margin: 10px 0;
     vertical-align: top;
     line-height: 30px;
     text-align: center;
     right: 8%;    
-    width: 170px;
+    width: 100px;
     
     -webkit-border-radius: 7.5px;   /*~~Styling*/
     -moz-border-radius: 7.5px;
@@ -416,7 +418,7 @@
     width: 120px;
 }
 #label_name {
-    position: relative;
+    position: absolute;
     overflow: scroll;
     display: inline-block;
     margin: 15px calc(8% + 170px) 15px calc(6.5% + 120px) !important;
