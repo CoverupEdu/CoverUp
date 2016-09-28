@@ -7,19 +7,19 @@
     border-color: #FFFFFF;
     background-color: #F79522;
     background-image: linear-gradient(0deg, #FFFFFF, #FFFFFF 50%, transparent 50%);
-    color: #FFFFFF; 
+    color: #FFFFFF;
 }
 .bar.bar-coverupOrange.title {
-    color: #FFFFFF; 
+    color: #FFFFFF;
 }
 .bar.bar-coverupOrange.footer {
     background-image: linear-gradient(180deg, #FFFFFF, #FFFFFF 50%, transparent 50%);
 }
-        
+
 .button.button-coverupOrange {
     border-color: transparent;
     background-color: #F79522;
-    color: #FFFFFF; 
+    color: #FFFFFF;
 }
 .button.button-coverupOrange:hover {
     color: #FFFFFF;
@@ -33,15 +33,15 @@
     background: none;
     box-shadow: none;
     color: #FFFFFF;
-    font-size: 17px; 
+    font-size: 17px;
 }
 .button.button-coverupOrange.button-bold {
     font-weight: 400; /*To match the font weight of the 'Ready!' button font with the back button font (hardly noticeable, but there is a slight difference)*/
-} 
+}
 .button.button-coverupOrange.button-icon {
     border-color: transparent;
     background: none; }
-    
+
 .button.ion-ios-arrow-forward:before {
     font-size: 25px !important; /*Resize arrow in Ready! button*/
 }
@@ -65,18 +65,18 @@
 #home-dropdown ul {
     position: relative;   /*~~Positioning*/
     margin: 0;
-    padding: 0;   
+    padding: 0;
     text-align: center;
 }
 #home-dropdown a {
     margin: 0;   /*~~Positioning*/
-    
+
     text-decoration: none;   /*~~Styling*/
 }
 #home-dropdown li {
     margin: 0;   /*~~Positioning*/
-    padding: 0;  
-    
+    padding: 0;
+
     cursor: pointer;   /*~~Styling*/
 }
 #home-dropdown > ul > li {
@@ -87,7 +87,7 @@
     line-height: 30px;
     text-align: center;
     width: 100px;
-    
+
 }
 #home-dropdown > ul > li span {
     display: block;
@@ -95,7 +95,7 @@
 
 #home-dropdown > ul > li > a {
     color: rgb(250, 250, 250);   /*~~Styling*/
-    
+
     -webkit-transition: color .15s;   /*~~Animations*/
     -moz-transition: color .15s;
     -o-transition: color .15s;
@@ -104,7 +104,7 @@
 #home-dropdown > ul > li > ul {
     opacity: 0;   /*~~This makes menu hidden until further overriden (moused over)*/
     visibility: hidden;
-    
+
     position: absolute;   /*~~Positioning*/
     padding: 0;
     margin-left: -300%;
@@ -115,7 +115,7 @@
     text-align: center;
 
     background-color: #CCCCCC;  /*~~Styling*/
-    font-size: 15px;    
+    font-size: 15px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -134,7 +134,7 @@
     bottom: -20px;
     left: 75%;
     margin-left: -10px;
-    
+
     content:"";   /*~~Styling*/
     border-color: rgb(250, 250, 250) transparent transparent transparent;
     border-style: solid;
@@ -153,7 +153,7 @@
     color: rgb(50, 50, 50);   /*~~Styling*/
     background-color: rgb(250, 250, 250);
     line-height: 100px;
-    
+
     -webkit-transition: background-color .25s;   /*~~Animations*/
     -moz-transition: background-color .25s;
     -o-transition: background-color .25s;
@@ -204,7 +204,7 @@
 .toggle-home-btn #button3list { /*Why isn't it possible to do ".toggle-home-btn > ul {"? Which should really do the same thing? I have no idea either. Very strange bugs.*/
     opacity: 1;
     visibility: visible; /*This class only makes the dropdown menu visible, which has already been built but is invisible to the user*/
-    bottom: 75px;   
+    bottom: 75px;
 }
 
 /*~~~~~~~~~~~~~~~~*/
@@ -249,17 +249,17 @@
 .setPhoto {
     display: inline-block;
     position: relative;
-    border: 1px solid white;   
+    border: 1px solid white;
     background-color: #F79522;
-    
+
     text-align: center;
-        
+
     height: 460px;
     width: 285px;
-        
+
     margin: 10px;
     padding: 12px 12px 140px 12px;
-    
+
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -271,7 +271,7 @@
 .setPhoto > img {
     height: 100%;
     width: 100%;
-    
+
     border: 1px solid white;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -282,7 +282,7 @@
     padding: 8px 0 8px 0;
     margin: 0;
     width: 100%;
-    
+
     position: relative;
     display: block;
     color: white;
@@ -293,7 +293,7 @@
     padding: 0px 0 8px 0;
     margin: 0;
     width: 100%;
-    
+
     position: relative;
     display: block;
     color: #F2F2F2;
@@ -305,10 +305,10 @@
     display: inline-block;
     color: white;
     font-size: 18px;
-    
+
     width: 85px;
     cursor: pointer;
-        
+
     padding: 24px 0px 24px 0;
 }
 .setPhoto > div > a {
@@ -321,7 +321,7 @@
 
 .setPhoto ul {
 	visibility: hidden;
-	
+
     position: absolute;   /*~~Positioning*/
     padding: 0;
     bottom: 73px;
@@ -331,8 +331,8 @@
     text-align: center;
 
     background-color: #F79522;  /*~~Styling*/
-    font-size: 15px; 
-	
+    font-size: 15px;
+
 	border: 1px solid white;
 	-webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -340,7 +340,7 @@
     -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
     -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
     box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
-	
+
 }
 .setPhoto ul:before {
 	position: absolute;   /*~~Positioning*/
@@ -348,7 +348,7 @@
     bottom: -20px;
     left: 74%;
     margin-left: -10px;
-    
+
     content:"";   /*~~Styling*/
     border-color: rgb(250, 250, 250) transparent transparent transparent;
     border-style: solid;
@@ -393,14 +393,15 @@
 
 #loctestShowAnswerButton {
     position: absolute;   /*~~Positioning*/
-    padding: 10px 0px 40px 0px;
+    padding: 10px 0px 10px 0px;
     margin: 10px 0;
     vertical-align: top;
-    line-height: 30px;
+    line-height: 20px;
     text-align: center;
-    right: 8%;    
+    bottom: 11%;
+    right: 6%;
     width: 100px;
-    
+
     -webkit-border-radius: 7.5px;   /*~~Styling*/
     -moz-border-radius: 7.5px;
     border-radius: 7.5px;
@@ -442,7 +443,7 @@
 }
 
 
-.popover { 
+.popover {
 margin-left:0px !important;
 margin-top:-10px !important;
 }
@@ -461,7 +462,7 @@ margin-top:-10px !important;
     top: -20px;
     left: 50%;
     margin-left: -10px;
-    
+
     content:"";
     border-color: transparent transparent rgb(250, 250, 250)  transparent;
     border-style: solid;
@@ -472,22 +473,22 @@ margin-top:-10px !important;
     border-radius: 3px;
     border-left: 4px solid rgb(235,235,235);
     width: 175px;
-    
+
     transition: border-left 0.25s;
 }
 .modPop input[type=text]:focus {
     border-left: 4px solid #F79522
 }
 .fakePop {
-    background-color:white; 
-    position:absolute; 
-    top:35px; 
-    right:-70px; 
+    background-color:white;
+    position:absolute;
+    top:35px;
+    right:-70px;
     min-height:40px;
-    border-radius:3px; 
-    min-width:180px; 
-    max-width:180px; 
-    color:black; 
+    border-radius:3px;
+    min-width:180px;
+    max-width:180px;
+    color:black;
     font-size:25px;
     vertical-align:middle;
     line-height:25px;
@@ -502,30 +503,30 @@ margin-top:-10px !important;
 
 .save_popover_style {
     position: absolute; /*~~Shape*/
-    
+
     height: 101%; /*~~Positioning*/
     width: 100%;
     left: 0 !important;
     top: 0 !important;
-    
+
     background-color: white !important; /*~~Styling*/
     opacity: 0.9 !important;
-    
+
 }
 .save_popover_style ion-content {
     position: absolute; /*~~Shape*/
-    display: block; 
+    display: block;
     float: left;
-    
+
 	margin: auto !important; /*~~Positioning*/
     width: 250px;
     height: 450px;
-    
+
     background-color: #F79522; /*~~Styling*/
     -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
     -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
     box-shadow: 0px 1px 3px rgba(0, 0, 0, .4);
-	
+
 	-webkit-border-radius: 5px; /*~~Border*/
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -535,19 +536,19 @@ margin-top:-10px !important;
 .save_popover_style.exit_btn {
     position: absolute; /*~~Shape*/
 	display: block;
-	
+
 	width: 20px; /*~~Positioning*/
     height: 20px;
     margin-left: 3px;
 	margin-top: 3px !important;
-	
+
 	color: white; /*~~Text*/
 	text-align: center;
 	line-height: 19px;
-		
+
 	cursor: pointer; /*~~Styling*/
 	background-color: #F79522 !important;
-	
+
 	-webkit-border-radius: 5px; /*~~Border*/
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -557,15 +558,15 @@ margin-top:-10px !important;
 .save_popover_style.title_text {
     position: absolute; /*~~Shape*/
     display: block;
-    
+
     width: 80%; /*~~Positioning*/
     height: 50px;
     margin-left: 10%;
     margin-top: 40px !important;
-    
+
     border-style: none; /*~~Border*/
 	background-color: #F79522 !important;
-    
+
     color: white; /*~~Text*/
     font-size: 22px;
 	text-align: center;
@@ -575,18 +576,18 @@ margin-top:-10px !important;
 .save_popover_style.title_input {
 	position: absolute; /*~~Shape*/
 	display: block;
-	
+
 	width: 80%; /*~~Positioning*/
 	height: 30px;
 	margin-left: 10%;
 	margin-top: 100px !important;
 	padding-left: 8px;
-	
+
 	-webkit-border-radius: 4px; /*~~Border*/
     -moz-border-radius: 4px;
     border-radius: 4px;
 	border: solid #F79522 1px;
-	
+
 	transition: border-left 0.25s; /*~~Animations*/
 }
 
@@ -597,38 +598,38 @@ margin-top:-10px !important;
 .save_popover_style.subject_text {
     position: absolute; /*~~Shape*/
     display: block;
-    
+
     width: 90%; /*~~Positioning*/
     height: 75px;
     margin-left: 5%;
     margin-top: 165px !important;
-    
+
     border-style: none; /*~~Styling*/
 	background-color: #F79522 !important;
-    
+
     color: white; /*~~Text*/
     font-size: 22px;
 	text-align: center;
 	line-height: 75px;
-	
+
 	border-top: solid white 1px; /*~~Border*/
 }
 
 .save_popover_style.subject_input {
     position: absolute; /*~~Shape*/
 	display: block;
-	
+
 	width: 80%; /*~~Positioning*/
 	height: 30px;
 	margin-left: 10%;
 	margin-top: 225px !important;
 	padding-left: 8px;
-	
+
 	-webkit-border-radius: 4px; /*~~Border*/
     -moz-border-radius: 4px;
     border-radius: 4px;
 	border: solid #F79522 1px;
-	
+
 	transition: border-left 0.25s; /*~~Animations*/
 }
 
@@ -639,36 +640,36 @@ margin-top:-10px !important;
 .save_popover_style.line {
 	position: absolute; /*Shape*/
 	display: block;
-	
+
 	width: 90%; /*Positioning*/
 	margin-left: 5%;
 	margin-top: 290px !important;
-	
+
 	border-top: solid white 1px; /*~~Border*/
 }
 
 .save_popover_style.save_btn {
     position: absolute; /*~~Shape*/
 	display: block;
-	
+
 	width: 70%; /*~~Positioning*/
 	height: 70px;
 	margin-left: 15%;
 	margin-top: 330px !important;
-	
+
 	background-color: #F79522 !important;
 	cursor: pointer;
-	
+
 	-webkit-border-radius: 5px; /*~~Border*/
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: solid white 2px;
-	
+
 	color: white; /*~~Text*/
 	text-align: center;
 	line-height: 66px;
 	font-size: 25px;
-	
+
 	-webkit-transition: all .25s;   /*~~Animations*/
     -moz-transition: all .25s;
     -o-transition: all .25s;
