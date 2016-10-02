@@ -393,13 +393,14 @@
 
 #loctestShowAnswerButton {
     position: absolute;   /*~~Positioning*/
-    padding: 10px 40px;
+    padding: 0px;
     margin: 10px 0;
     vertical-align: top;
     line-height: 30px;
     text-align: center;
     right: 8%;    
-    width: 170px;
+    width: 70px;
+    min-height:63px;
     
     -webkit-border-radius: 7.5px;   /*~~Styling*/
     -moz-border-radius: 7.5px;
@@ -683,3 +684,4 @@ margin-top:-10px !important;
 .platform-android .save_popover_style {
        margin-top: 10px;
 }
+
