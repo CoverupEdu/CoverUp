@@ -401,7 +401,7 @@
     right: 4%;
     top:10%;    
     width: 70px;
-    min-height:63px;
+    min-height:70px;
     
     -webkit-border-radius: 7.5px;   /*~~Styling*/
     -moz-border-radius: 7.5px;
@@ -419,7 +419,7 @@
 }
 #label_name {
     position: relative;
-    overflow: scroll;
+    overflow: visible;
     display: inline-block;
     margin: 15px calc(8% + 170px) 15px calc(6.5% + 120px) !important;
 }
