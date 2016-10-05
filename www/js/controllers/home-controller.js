@@ -19,8 +19,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	
 	$rootScope.$on('appIsReady', function() {
 		if(globalData.isDevice) {
-			console.log(cordova.file.dataDirectory);
-			globalData.curDir = "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+			globalData.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
 			customFileIO.loadDirList();
 		}
 	});
@@ -118,6 +117,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     }
     
     $scope.setToDefaultPhoto = function() {
+		globalData.moveOrCopy = false;
 		globalData.modifyName = null;
 		globalData.sourceDirectory = window.location.href.substring(0, window.location.href.indexOf("index.html")) + "img/";
 		globalData.sourceFileName = "default.jpg";
