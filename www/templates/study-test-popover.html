@@ -1,0 +1,30 @@
+<ion-popover-view class="save_popover_style">
+	<ion-content scroll="false">
+		<div class="save_popover_style exit_btn" ng-click="study_test_popover.hide()">
+			<p><span>X</span></p>
+		</div>
+		
+		<p style="font-size: 10px; padding: 10px; text-align: center; margin:20px" ng-click="swapTest()">Switch to {{otherTestName}}</p>
+		
+		<p style="font-size: 16px; padding: 10px; text-align: center">Number of errors in {{testName}} test</p>
+		
+		<div style="font-size: 16px; padding: 10px" ng-if="isLoctest">
+			<table style="position: fixed; left: 50%; transform: translateX(-50%)">
+				<tr ng-repeat="score in findScores track by $index | orderBy:'score'">
+					<td style="padding:10px">{{labelsService.labels[$index].label}}</td>
+					<td>{{score}}</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div style="font-size: 16px; padding: 10px" ng-if="!isLoctest">
+			<table style="position: fixed; left: 50%; transform: translateX(-50%)">
+				<tr ng-repeat="score in nameScores track by $index | orderBy:'score'">
+					<td style="padding:10px">{{labelsService.labels[$index].label}}</td>
+					<td>{{score}}</td>
+				</tr>
+			</table>
+		</div>
+			
+	</ion-content>
+</ion-popover-view>

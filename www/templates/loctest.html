@@ -5,9 +5,9 @@
   
 	<ion-content class="content-positive">
 		<div id="imghld2" class="img-holder">
-			<img id="imagecont2" ng-click="clickManage($event, 0, false, true)" class="image" ng-src="{{photoService.image}}">
+			<img id="imagecont2" ng-if="globalDataService.showImage" ng-click="clickManage($event, 0, false, true)" class="image" ng-src="{{photoService.image}}">
 			
-			<div ng-if="!showResult && showButtons">
+			<div ng-if="!showResult && showButtons && globalDataService.showImage">
 			<div ng-repeat="label in labelsService.labels"
 			style="margin-top:-23px !important; margin-left:-20px !important" 
 			class="button energized button-icon icon ion-ios-circle-filled label"   

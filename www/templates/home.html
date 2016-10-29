@@ -4,13 +4,23 @@
             <h3>Market Stuff!</h3>
         </div>
         <div id="sets-content">   <!-- Put stuff inside this to change the content of the sets tab! -->
-            <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>	<!-- ng-if to prevent ng-repeat from lagging up the app until the home view is loaded -->
+            <h1 style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%)" ng-if="noSets">No sets here!</h1>
+			<div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>	<!-- ng-if to prevent ng-repeat from lagging up the app until the home view is loaded -->
 				<p class="header">{{globalDataService.dirList[$index].substring(3).split('/')[0]}}</p>
 				<p class="header">Test subject</p>
-				<img ng-src = "{{globalDataService.previewImages[$index]}}">
-				<a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><a ng-click="customFileIOService.changePage($index, 'test')">Test</a>
+				<img ng-src = "{{globalDataService.previewImages[$index]}}" /><!--
+			--><a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><!--
+			--><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><!--
+			--><div id="home-test-btn"><!--
+			    --><a><span>Test</span></a><!--
+				--><ul id="home-test-dropdown"><!--
+				    --><li id="home-set-type-btn" ng-click="customFileIOService.changePage($index, 'test')"-->Type</li><!--
+				    --><li id="home-set-find-btn" ng-click="customFileIOService.changePage($index, 'loctest')">Find</li><!--
+				--></ul><!--
+			--></div>
 			</div>
-       </div> 
+       </div>
+	<div style="height: 80px"></div>
     </ion-content>
     
     <div id="home-dropdown">

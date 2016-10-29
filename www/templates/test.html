@@ -4,9 +4,9 @@
   
 	<ion-content class="content-positive">
 		<div id="imghld2" class="img-holder">
-			<img id="imagecont2" class="image" ng-src="{{photoService.image}}">
+			<img id="imagecont2" ng-if="globalDataService.showImage" class="image" ng-src="{{photoService.image}}">
 			
-			<div ng-repeat="label in labels">
+			<div ng-if="globalDataService.showImage" ng-repeat="label in labels">
                 <div ng-show="IsItTheRightButton($index)" style="margin-top:-23px !important; margin-left:-20px !important" class="button energized button-icon icon ion-ios-circle-filled label" ng-style="labelStyle[$index]" id="locbutton{{$index}}">
                 </div>
             </div>
@@ -18,7 +18,7 @@
         <span class="input-label" >Label name:</span>
         <input type="text" ng-model="answer">
     </label>
-    <button ng-click="EnterNextAnswer()" style="background-color:white; border:0px; border-radius:2px; margin-right:10px;">Enter</button>
+    <button ng-click="EnterNextAnswer(false)" style="background-color:white; border:0px; border-radius:2px; margin-right:10px;">Enter</button>
     <p style="margin-right: 10%;">
           {{correctORwrong}}
     </p>

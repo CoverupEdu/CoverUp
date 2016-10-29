@@ -113,7 +113,8 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	//~~~~~~~~~~~~~~~~~
 	
 	$ionicPopover.fromTemplateUrl('templates/save-popover.html', {
-        scope: $scope
+        scope: $scope,
+		animation: 'slide-in-up'
     	}).then(function(popover) {
         	$scope.save_popover = popover;
 		});

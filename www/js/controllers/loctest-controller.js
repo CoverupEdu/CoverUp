@@ -1,8 +1,10 @@
 // CONTROLLER: loctest-controller
 // Controls the loctest page.
-app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function(globalData, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
+app.controller('loctest-controller', ['$rootScope', '$ionicPlatform', 'Test', '$state', 'customFileIO', '$ionicPopover', 'globalData', '$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function($rootScope, $ionicPlatform, Test, $state, customFileIO, $ionicPopover, globalData, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
     $scope.labelsService = Labels;
 	$scope.photoService = Photo;
+	$scope.globalDataService = globalData;
+	$scope.testService = Test;
 	$scope.testIndex = [];
 	$scope.curIndex1 = 0;
 	$scope.curIndex2 = 0;
@@ -14,6 +16,26 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 	$scope.showButtons = true;
 	$scope.answer_toggled = false;
 	$scope.showAnsText = "Show Answer";
+	Test.testCorrect = [];
+	Test.testIncorrect = [];
+	Test.onFind = true;
+	
+	
+	$ionicPopover.fromTemplateUrl('templates/test-popover.html', {
+        scope: $scope,
+		animation: 'slide-in-up'
+    	}).then(function(popover) {
+        	Test.test_popover = popover;
+		});
+	
+	$ionicPlatform.registerBackButtonAction(function (event) {
+		if(Test.onResults){
+			Test.callReturn(0);
+		}
+		else {
+			navigator.app.backHistory();
+		}
+	}, 1000);
 	
 	$scope.toggleButtons = function() {$scope.showButtons = !$scope.showButtons;}	//needed because invoked in DOM through angular
 	
@@ -27,7 +49,8 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 	
 	$scope.selectLabel = function() {		//choose new label to be tested for 
 		if ($scope.testIndex.length == 0) {
-			console.log("unfinished");
+			Test.onResults = true;
+			Test.test_popover.show();
 		} 
 		else {
 			$scope.curIndex1 = Math.floor($scope.testIndex.length * Math.random());		//explanation for these two lines at the bottom of the page
@@ -60,9 +83,13 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 							Math.pow((event.offsetY - (Labels.labels[$scope.curIndex2].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height)), 2);
 					if (x <= 6400) {						//pythagorean implementation of whether clicked point lies within 80 pixels of correct label position (80 squared = 6400)
 						$scope.answerResult = true;
+						Test.testCorrect.push($scope.curIndex2);
+						console.log(Test.testCorrect);
 					} 
 					else {
 						$scope.answerResult = false;
+						Test.testIncorrect.push($scope.curIndex2);
+						console.log(Test.testIncorrect);
 					}
 					
 					$scope.crossLoc = {	
@@ -74,9 +101,13 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 				else {
 					if ($scope.curIndex2 == num) {			//if index of button clicked was correct label
 						$scope.answerResult = true;
+						Test.testCorrect.push($scope.curIndex2);
+						console.log(Test.testCorrect);
 					}
 					else {
 						$scope.answerResult = false;
+						Test.testIncorrect.push($scope.curIndex2);
+						console.log(Test.testIncorrect);
 					}
 					
 					$scope.crossLoc = {
@@ -88,6 +119,8 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 			else {											//if 'show answer' clicked, asume answer correct
 				$scope.showTick = true;
 				$scope.answerResult = true;
+				Test.testIncorrect.push($scope.curIndex2);
+				console.log(Test.testIncorrect);
 			}
 			$scope.showTick = true;							//if the answer was right, don't bother showing the cross
 			if ($scope.answerResult == false) {
@@ -101,10 +134,10 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 	
 	$timeout(function() {			//initialise style
 		$scope.selectLabel();
-		$scope.setStyleAll();
+		$rootScope.setStyleAll();
 	})
 	
-	$scope.setStyleAll = function() {
+	$rootScope.setStyleAll = function() {
 		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
@@ -115,6 +148,10 @@ app.controller('loctest-controller', ['globalData', '$timeout', '$ionicScrollDel
 			left: (Labels.labels[val].x * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().width + 'px'),
 			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont2').getBoundingClientRect().height + 'px')
 		};
+	}
+	
+	$scope.callLocalReturn = function() {
+		Test.callReturn(0);
 	}
 	
 	/*Function simulates a click on the correct label and also toggles the styling of the button.*/

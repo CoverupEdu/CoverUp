@@ -1,0 +1,21 @@
+<ion-popover-view class="save_popover_style">
+	<ion-content scroll="true">
+		<div >
+			<h1 style="padding: 10px; text-align: center"><span>Finished!</span></p>
+		</div>
+		<div">
+			<h1 style="padding: 10px; text-align: center"><span>Correct answers:</span></p>
+		</div>
+		<p  style="font-size: 16px; padding: 10px; text-align: center" ng-repeat="answer in testService.testCorrect">{{labelsService.labels[answer].label}}</p>
+		
+		<div">
+			<h1 style="padding: 10px; text-align: center"><span>Incorrect answers:</span></p>
+		</div>
+		<p  style="font-size: 16px; padding: 10px; text-align: center" ng-repeat="answer in testService.testIncorrect">{{labelsService.labels[answer].label}}</p>
+		
+		<div  style="font-size: 16px; padding: 10px; text-align: center" ng-click="callLocalReturn()">
+			<p>Return</p>
+		</div>
+			
+	</ion-content>
+</ion-popover-view>

@@ -1,8 +1,11 @@
 // CONTROLLER: test-controller
 // Controls the test page.
-app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function($timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
-    $scope.labels = Labels.labels;
+app.controller('test-controller', ['globalData', '$rootScope', '$ionicPlatform', '$ionicPopover', 'Test', '$timeout', '$ionicScrollDelegate', '$scope', 'Photo', 'Labels', function(globalData, $rootScope, $ionicPlatform, $ionicPopover, Test, $timeout, $ionicScrollDelegate, $scope, Photo, Labels) {
+    $scope.globalDataService = globalData;
+	$scope.labels = Labels.labels;
+	$scope.labelsService = Labels;
     $scope.photoService = Photo;
+	$scope.testService = Test;
     $scope.currentButton = 0;
     $scope.finished = false;
     $scope.score = 0;
@@ -11,7 +14,31 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
     $scope.correctORwrong = "";
     $scope.howmanybuttons = 0;
     $scope.randomiser = [];
+	$scope.answer_toggled = false;
+	$scope.showAnsText = "Show Answer";
+	Test.testCorrect = [];
+	Test.testIncorrect = [];
+	Test.onFind = false;
+	
 
+	var toggle_answer_btn = document.getElementById("loctestShowAnswerButton");	//define variable as HTML DOM element for Show Answer button
+	
+	$ionicPopover.fromTemplateUrl('templates/test-popover.html', {
+        scope: $scope,
+		animation: 'slide-in-up'
+    	}).then(function(popover) {
+        	Test.test_popover = popover;
+		});
+	
+	$ionicPlatform.registerBackButtonAction(function (event) {
+		if(Test.onResults){
+			Test.callReturn(1);
+		}
+		else {
+			navigator.app.backHistory();
+		}
+	}, 1000);
+	
     $scope.IsItTheRightButton = function (index) {
         $scope.setStyle(index)
         if (index == $scope.currentButton) {
@@ -20,8 +47,7 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
         return false;
     };
 
-    $scope.EnterNextAnswer = function ()
-    {
+    $scope.EnterNextAnswer = function (override) {
         var tempInput = $scope.answer;
         var tempCurrentLabel = $scope.labels[$scope.currentButton].label;
 
@@ -29,20 +55,34 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
         tempCurrentLabel = $scope.caseInsensitive(tempCurrentLabel);
         
         if ($scope.equivalent(tempInput, tempCurrentLabel)) {
-            $scope.score++;
+			$scope.score++;
             $scope.correctORwrong = "Correct";
+			Test.testCorrect.push($scope.currentButton);
         }
+		else if(override) {
+			$scope.score++;
+			$scope.correctORwrong = "Correct";
+			Test.testIncorrect.push($scope.currentButton);
+		}
         else {
             $scope.correctORwrong = "Wrong";
+			Test.testIncorrect.push($scope.currentButton);
         }
         $scope.howmanybuttons++;
         $scope.currentButton = $scope.randomiser[$scope.howmanybuttons];
         if ($scope.howmanybuttons == $scope.labels.length) {
-            $scope.finished = true;
+            Test.onResults = true;
+			Test.test_popover.show();	//SHOW FINAL POPUP
         }
+		console.log(Test.testCorrect);
+		console.log(Test.testIncorrect);
     };
 
-    $scope.setStyleAll = function () {
+	$scope.callLocalReturn = function() {
+		Test.callReturn(1);
+	}
+	
+    $rootScope.setStyleAll = function () {
         for (i = 0; i < $scope.labels.length; i++) {
             $scope.setStyle(i);
         }
@@ -69,8 +109,7 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
         return inString;
     };
 
-    $scope.Shuffle = function ()
-    {
+    $scope.Shuffle = function () {
         var temp = new Array($scope.labels.length);
         for (i = 0; i < $scope.labels.length; i++)
         {
@@ -109,7 +148,7 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
                 }
             }
         }
-        if (tempInput.length == tempCurrentLabel.length + 1)
+        if (tempInput.length == tempCurrentLabel.length + 1 && tempInput.length != 0)
         {
             for (i = 0; i < tempInput.length; i++)
             {
@@ -149,4 +188,5 @@ app.controller('test-controller', ['$timeout', '$ionicScrollDelegate', '$scope',
         }
         return false;
     };
+
 }])

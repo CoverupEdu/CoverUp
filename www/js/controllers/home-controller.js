@@ -2,7 +2,7 @@
 // Controls home page.
 
 app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(Labels, globalData, customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
-    
+        
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
     var btn3 = document.getElementById("button3");
@@ -13,16 +13,40 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	globalData.previewImages = [];
 	$scope.customFileIOService = customFileIO;	//direct scope injection of service
 	$scope.globalDataService = globalData;		//direct scope injection of service
+	$scope.noSets = false;
 	
-	
-	
+	$timeout(function() {
+		if(globalData.dirList.length == 0) 
+			{
+				$scope.noSets = true;
+			}
+			else 
+			{
+				$scope.noSets = false;
+			}
+	})
 	
 	$rootScope.$on('appIsReady', function() {
 		if(globalData.isDevice) {
-			globalData.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
-			customFileIO.loadDirList();
+			globalData.curDir = "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+			customFileIO.loadDirList()
 		}
 	});
+	
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){ 
+		console.log("index");
+		if(toState.name == "index")
+		{
+			if(globalData.dirList.length == 0) 
+			{
+				$scope.noSets = true;
+			}
+			else 
+			{
+				$scope.noSets = false;
+			}
+		}
+	})
 	
 	/*when appIsReady event is emitted by globalData i.e. app is ready, and assuming app isn't on a browser,
 	the current directory variable is assigned the path of the root app data directory, and the sets to be loaded on
@@ -117,7 +141,10 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     }
     
     $scope.setToDefaultPhoto = function() {
+		globalData.moveOrCopy = false;
 		globalData.modifyName = null;
+		globalData.sourceDirectory = window.location.href.substring(0, window.location.href.indexOf("index.html")) + "img/";
+		globalData.sourceFileName = "default.jpg";
         Photo.setImage("img/default.jpg");
         $scope.handleTransition();
 		$state.go('modify');
@@ -166,6 +193,11 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     btn3.onclick = function() {
         toggleCreate();
     }    
+    
+    $(document).on("click", "#home-test-btn", function(e) {
+    	this.classList.toggle("toggle_home_test_dropdown");
+    });
+    
     enableSets(); //Set tab is open by default
     
 }]);

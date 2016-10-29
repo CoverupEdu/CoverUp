@@ -2,7 +2,7 @@
 // Use this for global variables (i.e. in place of $rootScope). Variables must be declared here.
 app.service('globalData', ['$rootScope', function($rootScope) {
 	
-	this.emitReady = function() {		//not strictly related to file io but just here for convenience
+	this.emitReady = function() {		
 		var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 		if ( app ) {
 			this.isDevice = true;
@@ -26,5 +26,6 @@ app.service('globalData', ['$rootScope', function($rootScope) {
 	this.isDevice;
 	this.labelArray = [];
 	this.showImage = false;
-	
+	this.metadata = new Object();
+	this.pageLoadTime = 600;
 }])
