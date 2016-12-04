@@ -48,6 +48,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/test.html',
         controller: 'test-controller'
     })
+    .state('loctest', {
+        url: '/loctest',
+        templateUrl: 'templates/loctest.html',
+        controller: 'loctest-controller'
+    })
 
     $urlRouterProvider.otherwise('/home');
 });

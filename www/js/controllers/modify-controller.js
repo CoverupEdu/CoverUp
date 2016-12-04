@@ -9,13 +9,17 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	$scope.labelStyle = [];				//array of coordinates of each label
 	globalData.popOpen = false;			//boolean for determining whether popover is shown
 	$scope.LabelsService = Labels;
+	$scope.globalDataService = globalData;
+	
+	$scope.setTitle = "";  //Intermediate vars to store the name and subject of the set while saving
+	$scope.setSubject = "";
 	
 	$ionicPopover.fromTemplateUrl('templates/modify-popover.html', {
         scope: $scope
     }).then(function(popover) {
         $scope.popover = popover;
 	});
-    	
+    
 	/*
 	One popover is generated from the html template specified, and assigned to local scope.
 	Only one popover ever exists in the application; what changes is its position and contents according to which label is selected.
@@ -27,7 +31,10 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
    });
     */
 	
-	$scope.setStyleAll = function() {
+	
+	
+	
+	$rootScope.setStyleAll = function() {
 		for (i = 0; i < Labels.labels.length; i++) {
 			$scope.setStyle(i);
 		}
@@ -47,7 +54,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	$scope.deleteLabel = function() {
 		$scope.popover.hide();
 		Labels.labels.splice($scope.curIndex, 1);
-		$scope.setStyleAll();
+		$rootScope.setStyleAll();
 	}
 	
 	$rootScope.checkNull = function() {
@@ -100,16 +107,22 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 	}
 	
 	//select appropriate element of the 'modify' html DOM.
-
-	
 	
 	//~~~~~~~~~~~~~~~~~
-	//Save Feature
+	//Saving Popover
 	//~~~~~~~~~~~~~~~~~
 	
+	$ionicPopover.fromTemplateUrl('templates/save-popover.html', {
+        scope: $scope
+    	}).then(function(popover) {
+        	$scope.save_popover = popover;
+		});
+		
+		
 	$scope.callSave = function() {
 		globalData.showSets = false;			//prevent sets from loading/lagging up app
-		customFileIO.saveSet(Labels.labels)		//save labels of current set
+		$scope.save_popover.remove();      //delete and hide the saving popover
+		customFileIO.saveSet(Labels.labels, document.getElementById('save_title').value, document.getElementById('save_subject'))		//save labels of current set
 		.then(function() {
 			return customFileIO.loadDirList();	//load new range of sets to sets page
 		}).then(function() {
@@ -119,4 +132,23 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 			}, 400);
 		});
 	}
+	
+	$scope.callDelete = function() {
+		globalData.showSets = false;			//prevent sets from loading/lagging up app
+		customFileIO.deleteSet(globalData.modifyName)
+		.then(function(success) {
+			return customFileIO.loadDirList();
+		}).then(function(success) {
+			$state.go('index');					
+			$timeout(function() {
+				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
+			}, 400);
+		});
+	}
+	
 }])
+
+
+	
+	
+	

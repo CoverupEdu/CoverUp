@@ -2,7 +2,7 @@
 // Controls home page.
 
 app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(Labels, globalData, customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
-    
+        
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
     var btn3 = document.getElementById("button3");
@@ -19,7 +19,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	
 	$rootScope.$on('appIsReady', function() {
 		if(globalData.isDevice) {
-			globalData.curDir = cordova.file.dataDirectory; //debug dir: "file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
+			globalData.curDir = cordova.file.dataDirectory; //"file:///storage/emulated/0/Android/data/com.ionicframework.coverup924061/files/";
 			customFileIO.loadDirList();
 		}
 	});
@@ -74,7 +74,8 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 
     $scope.takePhoto = function() {
 		globalData.modifyName = null;		//since this is not an instance of a pre-existing set being modified
-        var options = {
+        globalData.moveOrCopy = true;
+		var options = {
 			destinationType: navigator.camera.DestinationType.FILE_URI,
 			quality: 60,
 			correctOrientation: true,
@@ -82,10 +83,11 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			globalData.sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
-			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
+			var mainString = sourcePath + "?";
+			globalData.sourceDirectory = mainString.substring(0, mainString.lastIndexOf('/') + 1);
+			globalData.sourceFileName = mainString.substring(mainString.lastIndexOf('/') + 1, mainString.indexOf('?'));
 			Photo.setImage(sourcePath);
-			Labels.labels = [];			//refresh loaded labels
+			$scope.handleTransition();
 			$state.go('modify');		//after taking photo and storing in cache memory, go to modify page
         }, function(err) {
 			$state.go('index');			//if a photo isn't taken, return to home page
@@ -103,10 +105,11 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         };
         
         Photo.getPicture(options).then(function (sourcePath) {
-			globalData.sourceDirectory = "file://" + sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1); //possibly contentious for ios
-			globalData.sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
+			var mainString = sourcePath + "?";
+			globalData.sourceDirectory = mainString.substring(0, mainString.lastIndexOf('/') + 1); //possibly contentious for ios
+			globalData.sourceFileName = mainString.substring(mainString.lastIndexOf('/') + 1, mainString.indexOf('?'));
 			Photo.setImage(sourcePath);
-			Labels.labels = [];
+			$scope.handleTransition();
 			$state.go('modify');
         }, function(err) {
 			$state.go('index');
@@ -114,13 +117,23 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     }
     
     $scope.setToDefaultPhoto = function() {
+		globalData.moveOrCopy = false;
 		globalData.modifyName = null;
+		globalData.sourceDirectory = window.location.href.substring(0, window.location.href.indexOf("index.html")) + "img/";
+		globalData.sourceFileName = "default.jpg";
         Photo.setImage("img/default.jpg");
-        Labels.labels = [];
+        $scope.handleTransition();
 		$state.go('modify');
     }
     
-	
+	$scope.handleTransition = function() {
+		Labels.labels = [];			//reset loaded labels
+		globalData.showImage = false;
+		$timeout(function() {
+			globalData.showImage = true;
+			$timeout(function() {$rootScope.setStyleAll();}, 50)
+		}, 800);
+	}
 	
 	
     //~~~~~~~~~~~~~~~~~~~~~
@@ -141,6 +154,10 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         sets.style.display = "block";
     }
     
+    toggleCreate = function() {
+        btn3.classList.toggle("toggle-home-btn");
+    }
+    
      btn1.onclick = function() {
         enableMarket();
     }
@@ -149,14 +166,13 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
         enableSets();
     }
 
-    $(btn3).hover(
-        function() {
-            $(this).addClass("toggle-home-btn");
-        }, 
-        function() {
-            $(this).removeClass("toggle-home-btn");
-        }
-    );
+    btn3.onclick = function() {
+        toggleCreate();
+    }    
+    
+    $(document).on("click", "#home-test-btn", function(e) {
+    	this.classList.toggle("toggle_home_test_dropdown");
+    });
     
     enableSets(); //Set tab is open by default
     

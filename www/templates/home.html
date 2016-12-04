@@ -7,30 +7,37 @@
             <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>	<!-- ng-if to prevent ng-repeat from lagging up the app until the home view is loaded -->
 				<p class="header">{{globalDataService.dirList[$index].substring(3).split('/')[0]}}</p>
 				<p class="header">Test subject</p>
-				<img ng-src = "{{globalDataService.previewImages[$index]}}">
-				<a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><a ng-click="customFileIOService.changePage($index, 'test')">Test</a>
+				<img ng-src = "{{globalDataService.previewImages[$index]}}" /><!--
+			--><a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><!--
+			--><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><!--
+			--><div id="home-test-btn"><!--
+			    --><a><span>Test</span></a><!--
+				--><ul id="home-test-dropdown"><!--
+				    --><li id="home-set-type-btn" style="color: grey; background-color: #cc7a00; cursor: default;"><!--ng-click="customFileIOService.changePage($index, 'test')"-->Type</li><!--
+				    --><li id="home-set-find-btn" ng-click="customFileIOService.changePage($index, 'loctest')">Find</li><!--
+				--></ul><!--
+			--></div>
 			</div>
        </div> 
     </ion-content>
     
     <div id="home-dropdown">
         <ul>
-		<li id="button3" style="margin-right: calc(20% - 120px);"> <!-- Same as above -->
+            <li id="button1">
+               <a href="#"><span><i class="ion-bag"></i></span><span>Marketplace</span></a>
+            </li><!-- This comment is important to ensure no whitespace between buttons! Don't remove
+            --><li id="button2">
+                <a href="#"><span><i class="ion-person"></i></span><span>My Sets</span></a>
+            </li><!-- Same as above
+            --><li id="button3">
                 <a href="#"><span><i class="ion-plus-round"></i></span><span>Create</span></a>
-                <ul>
-                    <li><a ng-click="takePhotoFromGallery()"><span>From Gallery</span></a></li>
-                    <li><a ng-click="takePhoto()"><span>Take Photo</span></a></li>
-                    <li><a ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
+                <ul id="button3list">
+                    <li><a id="option1" ng-click="takePhotoFromGallery()"><span>From Gallery</span></a></li>
+                    <li><a id="option2" ng-click="takePhoto()"><span>Take Photo</span></a></li>
+                    <li><a id="option3" ng-click="setToDefaultPhoto()"><span>Default (debug)</span></a></li>
                     <ul></ul>
                 </ul>
-            </li>
-            <li id="button1"> <!-- Some inline css to ensure the buttons stretch apart dynamically -->
-               <a href="#"><span><i class="ion-bag"></i></span><span>Marketplace</span></a>
-            </li>
-            <li id="button2" style="margin-left: calc(20% - 120px);">
-                <a href="#"><span><i class="ion-person"></i></span><span>My Sets</span></a>
-            </li>
-            
+            </li>  
         </ul>
     </div> 
 </ion-view>
