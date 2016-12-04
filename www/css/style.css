@@ -319,7 +319,7 @@
     border-right: 1px solid #FFFFFF;
 }
 
-.setPhoto ul {
+#home-test-dropdown {
 	visibility: hidden;
 	
     position: absolute;   /*~~Positioning*/
@@ -342,7 +342,7 @@
     box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
 	
 }
-.setPhoto ul:before {
+#home-test-dropdown:before {  /*Styling for the small arrow below dropdown menu*/
 	position: absolute;   /*~~Positioning*/
     display: block;
     bottom: -20px;
@@ -354,7 +354,7 @@
     border-style: solid;
     border-width: 10px;
 }
-.setPhoto ul > li {
+#home-test-dropdown > li, #home-edit-dropdown > li {
 	position: relative;
     float: left;
     width: 50%;
@@ -365,17 +365,17 @@
 	cursor: pointer;
 }
 
-.toggle_home_test_dropdown {
+.toggle_home_test_dropdown, .toggle_home_edit_dropdown {
 	background-color: white;
 }
-.toggle_home_test_dropdown > a > span {
+.toggle_home_test_dropdown > a > span, .toggle_home_edit_dropdown > a > span {
 	color: #F79522;
 }
-.toggle_home_test_dropdown #home-test-dropdown {
+.toggle_home_test_dropdown #home-test-dropdown, .toggle_home_edit_dropdown #home-edit-dropdown {
 	visibility: visible;
 }
 
-#home-set-type-btn:before {
+#home-set-type-btn:before, #home-set-modify-btn:before {
 	content: " ";
     position: absolute;
     top: 5px;
@@ -385,6 +385,42 @@
     border-right: 1px solid white;
 }
 
+
+#home-edit-dropdown {
+    /*visibility: hidden;*/
+	
+    position: absolute;   /*~~Positioning*/
+    padding: 0;
+    bottom: 73px;
+    width: 165px;
+    height: 65px;
+	left: -3px;
+    text-align: center;
+
+    background-color: #F79522;  /*~~Styling*/
+    font-size: 15px; 
+	
+	border: 1px solid white;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
+    -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, .4);
+}
+
+#home-edit-dropdown:before {
+	position: absolute;   /*~~Positioning*/
+    display: block;
+    bottom: -20px;
+    right: 66%;
+    margin-left: -10px;
+    
+    content:"";   /*~~Styling*/
+    border-color: rgb(250, 250, 250) transparent transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+}
 
 /*~~~~~~~~~~~~~~~~*/
 /*Styling for loctest page

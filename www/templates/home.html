@@ -7,19 +7,31 @@
             <div ng-if="globalDataService.showSets" ng-repeat="image in globalDataService.previewImages" class = 'setPhoto'>	<!-- ng-if to prevent ng-repeat from lagging up the app until the home view is loaded -->
 				<p class="header">{{globalDataService.dirList[$index].substring(3).split('/')[0]}}</p>
 				<p class="header">Test subject</p>
-				<img ng-src = "{{globalDataService.previewImages[$index]}}" /><!--
-			--><a ng-click="customFileIOService.changePage($index, 'modify')">Edit</a><!--
+				<img ng-src = "{{globalDataService.previewImages[$index]}}"/><!--
+				
+			--><div id="home-edit-btn"><!--
+			    --><a><span>Edit</span></a><!--
+			    --><ul id="home-edit-dropdown"><!--
+			        --><li id="home-set-modify-btn" ng-click="customFileIOService.changePage($index, 'modify')">Modify</li><!--
+			        --><li id="home-set-rename-btn" ng-click="">Rename</li><!--
+			    --></ul><!--
+			--></div><!--
+			
 			--><a ng-click="customFileIOService.changePage($index, 'study')">Learn</a><!--
+			
 			--><div id="home-test-btn"><!--
 			    --><a><span>Test</span></a><!--
 				--><ul id="home-test-dropdown"><!--
-				    --><li id="home-set-type-btn" style="color: grey; background-color: #cc7a00; cursor: default;"><!--ng-click="customFileIOService.changePage($index, 'test')"-->Type</li><!--
+				    --><li id="home-set-type-btn" ng-click="customFileIOService.changePage($index, 'test')">Type</li><!--
 				    --><li id="home-set-find-btn" ng-click="customFileIOService.changePage($index, 'loctest')">Find</li><!--
 				--></ul><!--
 			--></div>
+			
 			</div>
        </div> 
     </ion-content>
+    
+    				    <!-- style="color: grey; background-color: #cc7a00; cursor: default;"  .... Add this to a button to grey it out. Also the ng-click or ng-src element must be removed to deactivate it.-->
     
     <div id="home-dropdown">
         <ul>
