@@ -387,7 +387,7 @@
 
 
 #home-edit-dropdown {
-    /*visibility: hidden;*/
+    visibility: hidden;
 	
     position: absolute;   /*~~Positioning*/
     padding: 0;

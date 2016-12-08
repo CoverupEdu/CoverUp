@@ -48,7 +48,7 @@ app.controller('modify-controller', ['globalData', '$state', 'customFileIO', '$c
 			top: (Labels.labels[val].y * 0.01 * document.getElementById('imagecont').getBoundingClientRect().height + 'px')
 		};
 	}
-	
+	 	
 	//the positions of each label are stored as percentages from top and left-most points of the image. here, they're converted to page coordinates by applying the percentage (x 0.01) to image dimensions.
 	
 	$scope.deleteLabel = function() {

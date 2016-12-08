@@ -1,7 +1,7 @@
 // CONTROLLER: home-controller
 // Controls home page.
 
-app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', 'Photo', 'Sets', function(Labels, globalData, customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, Photo, Sets) {
+app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ionicPlatform', '$timeout', '$cordovaFile', '$state', '$scope', '$rootScope', '$ionicPopover', 'Photo', 'Sets', function(Labels, globalData, customFileIO, $ionicPlatform, $timeout, $cordovaFile, $state, $scope, $rootScope, $ionicPopover, Photo, Sets) {
         
     var btn1 = document.getElementById("button1");
     var btn2 = document.getElementById("button2");
@@ -137,7 +137,7 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
 	
 	
     //~~~~~~~~~~~~~~~~~~~~~
-    //Home page button control / layout control!
+    //Home page button control / layout control! (Mostly button toggling)
     //~~~~~~~~~~~~~~~~~~~~~
     
     enableMarket = function() {
@@ -172,8 +172,39 @@ app.controller('home-controller', ['Labels', 'globalData', 'customFileIO', '$ion
     
     $(document).on("click", "#home-test-btn", function(e) {
     	this.classList.toggle("toggle_home_test_dropdown");
+    	document.getElementById("home-edit-btn").classList.remove("toggle_home_edit_dropdown");
+    });
+    
+    $(document).on("click", "#home-edit-btn", function(e) {
+    	this.classList.toggle("toggle_home_edit_dropdown");
+    	document.getElementById("home-test-btn").classList.remove("toggle_home_test_dropdown");
     });
     
     enableSets(); //Set tab is open by default
+    
+    //~~~~~~~~~~~~~~~~~~~~~
+    //Home page renaming control
+    //~~~~~~~~~~~~~~~~~~~~~
+    
+    $ionicPopover.fromTemplateUrl('templates/save-popover.html', {
+        scope: $scope
+    	}).then(function(popover) {
+        	$scope.save_popover = popover;
+		});
+		
+		
+	$scope.callSave = function() {
+		globalData.showSets = false;			//prevent sets from loading/lagging up app
+		$scope.save_popover.remove();      //delete and hide the saving popover
+		customFileIO.saveSet(Labels.labels, document.getElementById('save_title').value, document.getElementById('save_subject'))		//save labels of current set
+		.then(function() {
+			return customFileIO.loadDirList();	//load new range of sets to sets page
+		}).then(function() {
+			$state.go('index');					
+			$timeout(function() {
+				globalData.showSets = true;		//after small amount of time (enough for transition), show sets
+			}, 400);
+		});
+	}
     
 }]);
